@@ -1,0 +1,21 @@
+{
+  "name": "progmote",
+  "version": "0.0.0",
+  "description": "ek",
+  "main": "arena.js",
+  "dependencies": {
+      "socket.io": "*",
+      "onecolor": "*",
+      "underscore": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eket/progmote.git"
+  },
+  "keywords": [
+    "ek"
+  ],
+  "author": "mcbuddha, brainrape",
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}
