@@ -8,23 +8,33 @@ _set_strain = (strain) ->
   _sock.emit 'strain', strain
   _strain = strain
 
-_last_eject = null
-_eject_throttle = 1000
+_last_eject = []
+_eject_throttle = 5000
 _find_food = (__, motes) ->
   n = _now()
-  cmds = _.map selves, (self) ->
-    size_limit = 1e-5 < (mass_from_radius self.radius)
-    rate_limit = if _last_eject? then _last_eject + _eject_throttle < n else true
-    if size_limit and rate_limit
-      i = selves.indexOf self
-      #_text_top _context, 'left'
-      #__.fillText i, _a*self.x, _a*(self.y-self.radius)
-      smallers = _.filter others, (ne) -> ne.radius < self.radius
-      targets = _.sortBy smallers, (other) -> _distance2 self, other
-      for other, j in targets
-        r = j/targets.length
-        __.strokeStyle = (one.color(_white).alpha 1-r).cssa()
-        __.strokeStyle = (one.color('#ff0000')).css() if j is 0
+  selves = _.filter motes, _self_pred
+  others = _.reject motes, _self_pred
+
+  _.map selves, (self, i) ->
+    if self.radius > 0.01
+      {x:x, y:y, vx:vx, vy:vy, radius:r} = self
+      targets = _.sortBy (_.filter others, (o) ->
+        o.radius < r), (t) ->
+        _distance2 self, t
+
+      if (l=_last_eject[i])?
+        __.fillStyle = ((one.color '#000').alpha 0.2).cssa()
+        __.beginPath()
+        __.moveTo _a*x, _a*y
+        passed = (l+_eject_throttle-n)/_eject_throttle
+        passed_a = (1-passed)*2*Math.PI
+        start_a = -0.5*Math.PI
+        __.arc _a*x, _a*y, _a*r, start_a, start_a+passed_a, no
+        __.fill()
+
+      _.each targets, (t, ti) ->
+        __.strokeStyle = ((one.color _white).alpha 1-ti/targets.length).cssa()
+        __.strokeStyle = (one.color '#f00').css() if ti is 0
         __.beginPath()
         __.moveTo _a*x, _a*y
         __.lineTo _a*t.x, _a*t.y
