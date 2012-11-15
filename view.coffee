@@ -25,9 +25,6 @@ _init = ->
 
 _update = (d) ->
   _clr _context, _a  
-  if _strain?
-    cmds = _find_food _context, d
-    _sock.emit 'cmds', [_strain, cmds]
 
   mass_sum = 0
   for mote in d
@@ -36,6 +33,11 @@ _update = (d) ->
 
   _text_top _context, 'left'
   _context.fillText (''+mass_sum)[0..10], _a*0.01, _a*0.99
+
+  if _strain?
+    ejects = _find_food _context, d
+    p = {strain: _strain, ejects: ejects}
+    _sock.emit 'ejects', p
 
 _draw_mote = (__, mote) ->
   strain = Strains[mote.strain]
