@@ -74,16 +74,17 @@ setup_random = (n, random_mote) ->
       break unless m_collide_with_view mote=random_mote()
     mote
 
-do_ais = () ->
-  _.map ais, (ai, strain) ->
-    {sock: s, cmds: cmds} = ai
-    ___ [strain, cmds]
-    if s and cmds
+do_ais = (__) ->
+  __ = _.map __, (ejects, strain) ->
+    if ejects?
       selves = _.filter motes, (m) -> m.strain is strain
-      _.each cmds, (cmd) ->
-        {act:act, i:i, arg: arg} = cmd
-        m_eject selves[i], 0.0001, arg[0], arg[1] if act is 'eject'
-    ai.cmds = []
+      if ejects.length <= selves.length
+        _.each ejects, (e, i) ->
+          {x:x, y:y} = e
+          if (s=selves[i])? and x and y
+            dm = 0.02 * mass_from_radius s.radius
+            m_eject s, dm, x, y
+    null
   _loop()
 
 ais_wait_id = null
@@ -100,21 +101,27 @@ _loop = _.throttle (->
 
   ___ "round #{rc}"
   s.emit 'update', motes for s in socks
-  ais_wait_id = setTimeout do_ais, 2000), 30
+  ais_wait_id = setTimeout (->
+    ___ 'ais timeout'
+    do_ais ais), 2000), 30
 
 Fixtures = require './fixtures.js'
 
 ais = {}
 socks = []
-io = (require 'socket.io').listen 4567
+io = (require 'socket.io').listen 4567, 'log level': 1
 io.sockets.on 'connection', (s) ->
   socks.push s
-  s.on 'strain', (d) -> ais[d] = {sock:s}
-  s.on 'cmds', (d) ->
-    ais[d[0]] = {sock: s, cmds: d[1]}
-    if (_.all (_.pluck ais, 'cmds'), (cmds) -> cmds?)
+  s.on 'strain', (d) ->
+    strain = d
+    ais[strain] = null
+  s.on 'ejects', (d) ->
+    {strain: strain, ejects: ejects} = d
+    ais[strain] = ejects
+    all_done = _.all (_.values ais), (v) -> v?
+    if all_done
       clearTimeout ais_wait_id
-      do_ais()
+      do_ais ais
 
   motes = setup_random 20, Fixtures.random_mote
   _.each motes, (m) -> m.vx = m.vy = 0
