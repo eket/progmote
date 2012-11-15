@@ -3,6 +3,7 @@ _distance2 = (a, b) -> _distance a.x, a.y, b.x, b.y
 _now = -> Date.now()
 
 _strain = null
+_self_pred = (m) -> m.strain is _strain
 _set_strain = (strain) ->
   _sock.emit 'strain', strain
   _strain = strain
@@ -10,8 +11,6 @@ _set_strain = (strain) ->
 _last_eject = null
 _eject_throttle = 1000
 _find_food = (__, motes) ->
-  pred = (m) -> m.strain is _strain
-  [selves, others] = [(_.filter motes, pred), (_.reject motes, pred)]
   n = _now()
   cmds = _.map selves, (self) ->
     size_limit = 1e-5 < (mass_from_radius self.radius)
@@ -27,13 +26,13 @@ _find_food = (__, motes) ->
         __.strokeStyle = (one.color(_white).alpha 1-r).cssa()
         __.strokeStyle = (one.color('#ff0000')).css() if j is 0
         __.beginPath()
-        __.moveTo _a*self.x, _a*self.y
-        __.lineTo _a*other.x, _a*other.y
+        __.moveTo _a*x, _a*y
+        __.lineTo _a*t.x, _a*t.y
         __.stroke()
-        #__.fillText "#{i}", _a*target.x, _a*(target.y-target.radius)-_label_height if target?
-      if (t=targets[0])?
-        _last_eject = n
-        {act: 'eject', i: i, arg:[-t.x+self.x, -t.y+self.y]}
+
+      if targets.length > 0 and (not (l=_last_eject[i])? or (l+_eject_throttle<n))
+        _last_eject[i] = n
+        target = targets[0]
+        {x: x-target.x, y:y-target.y}
       else {}
     else {}
-
