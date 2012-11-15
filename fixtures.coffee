@@ -3,7 +3,7 @@ random_sign = -> if Math.random() > 0.5 then 1 else -1
 
 random_mote = ->
   strain: strains[Math.floor Math.random() * strains.length]
-  radius: 0.05*Math.random()
+  radius: 0.01+0.05*Math.random()
   x: Math.random()
   y: Math.random()
   vx: 0.07*Math.random()*random_sign()
