@@ -1,7 +1,7 @@
 ___ = (x) -> console.log x
-mass_from_radius = (r) -> r*r*Math.PI
-radius_from_mass = (m) -> Math.sqrt m/Math.PI
-norm = (x, y) -> [x/(f=Math.sqrt x*x+y*y), y/f]
+_mass_from_radius = (r) -> r*r*Math.PI
+_radius_from_mass = (m) -> Math.sqrt m/Math.PI
+_norm = (x, y) -> [x/(f=Math.sqrt x*x+y*y), y/f]
 _clr = (__, w, h=w) -> __.clearRect 0, 0, w, h
 
 _label_height = 20
