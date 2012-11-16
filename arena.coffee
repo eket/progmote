@@ -1,12 +1,18 @@
 ___ = (x) -> console.log x
 _ = require 'underscore'
 
-distance = (x0, y0, x1, y1) -> Math.sqrt (Math.pow x1-x0, 2)+(Math.pow y1-y0, 2)
+distance = (x0,y0,x1,y1) -> Math.sqrt (Math.pow x1-x0, 2)+(Math.pow y1-y0, 2)
+distance2 = (a,b) -> Math.sqrt (Math.pow b.x-a.x, 2)+(Math.pow b.y-a.y, 2)
+sort2 = (a,b) -> if a > b then [b,a] else [a,b]
+sort_by2 = (a,b,f) -> if (f a) > (f b) then [b,a] else [a,b]
 dir = (n) -> if n < 0 then -1 else 1
-norm = (x, y) -> [x/(f=Math.sqrt x*x+y*y), y/f]
+norm = (x,y) -> [x/(f=Math.sqrt x*x+y*y), y/f]
 
 mass_from_radius = (r) -> r*r*Math.PI
 radius_from_mass = (m) -> Math.sqrt m/Math.PI
+
+m_mass = (a) -> mass_from_radius a.radius
+m_mass2 = (a,b) -> [(m_mass a), (m_mass b)]
 
 m_collide_with_view = (mote) ->
   {x: x, y: y, vx: vx, vy: vy, radius: r} = mote
@@ -23,7 +29,7 @@ m_displace = (mote, t) ->
   mote.y += vy * t
 
 m_overlaps_with_mote = (mote, other) ->
-  d = distance mote.x, mote.y, other.x, other.y
+  d = distance2 mote, other
   r = mote.radius + other.radius
   if d+1e-5 < r then [d, r-d] else no
 
@@ -32,17 +38,16 @@ m_collide_with_motes = (mote, motes) ->
     other is mote or not m_overlaps_with_mote mote, other), 'radius'
   m_collide_with_mote mote, others.pop() unless others.length < 1
 
-m_map_mass = (ms) -> _.map ms, (m) -> mass_from_radius m.radius
 m_collide_with_mote = (mote, other) ->
-  [loser, winner] = _.sortBy [mote, other], 'radius'
-  d = distance loser.x, loser.y, winner.x, winner.y
-  [m0, m1] = m_map_mass [loser, winner]
+  [loser, winner] = sort_by2 mote, other, (m) -> m.radius
+  d = distance2 loser, winner
+  [m0, m1] = m_mass2 loser, winner
   sum = m0+m1
   r0 = 1/2*(d+Math.sqrt(2*sum/Math.PI - d*d))
   r1 = d-r0
-  [r0, r1] = [(radius_from_mass sum), 0] if r1 < 0
-  [loser.radius, winner.radius] = [r0, r1].sort()
-  [m0_, m1_] = m_map_mass [loser, winner]
+  [r1, r0] = [0, radius_from_mass sum] if r1 < 0
+  [loser.radius, winner.radius] = sort2 r0, r1
+  [m0_, m1_] = m_mass2 loser, winner
   dm = m0-m0_
   winner.vx = (m1*winner.vx+(dm)*loser.vx)/m1_
   winner.vy = (m1*winner.vy+(dm)*loser.vy)/m1_
@@ -54,7 +59,6 @@ m_eject = (mote, dm, dx, dy) ->
   dr = radius_from_mass dm
   m0_ = m0-dm
   r0_ = radius_from_mass m0_
-
   dmote =
     strain: mote.strain
     radius: dr
@@ -62,7 +66,6 @@ m_eject = (mote, dm, dx, dy) ->
     y: y0+dy*1.1*(dr+r0_)
     vx: 0.5*dx
     vy: 0.5*dy
-
   mote.radius = r0_
   mote.vx = (m0*vx0-dm*dmote.vx)/m0_
   mote.vy = (m0*vy0-dm*dmote.vy)/m0_
@@ -82,7 +85,7 @@ do_ais = (__) ->
         _.each ejects, (e, i) ->
           {x:x, y:y} = e
           if (s=selves[i])? and x and y
-            dm = 0.02 * mass_from_radius s.radius
+            dm = 0.02 * m_mass s
             m_eject s, dm, x, y
     null
   _loop()
