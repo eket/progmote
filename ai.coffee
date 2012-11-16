@@ -42,10 +42,16 @@ _m_wait_eject = (i, now) ->
   else
     0
 
+_ai_motes = null
+_done = null
 _doit = (__, motes) ->
+  #_ai_motes = motes
   now = _now()
   sames = _.filter motes, _same_strain
   others = _.reject motes, _same_strain
+
+  _done = others.length is 0 and sames.length is 1 if not _done
+  return [{x:-1, y:-1}] if _done
 
   _.map sames, (mote, i) ->
     {x:x, y:y, vx:vx, vy:vy, radius:r} = mote
