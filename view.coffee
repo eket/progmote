@@ -19,49 +19,38 @@ _init = ->
   _sock = io.connect 'http://localhost:4567'
   _sock.on 'connect', ->
     ___ 'connected'
-    _set_strain 'orange'
+    #_set_strain 'orange'
     _sock.on 'update', (d) -> _update d
   _resize()
 
 _update = (d) ->
-  _clr _context, _a  
+  _clr _context, _a
 
   mass_sum = 0
   for mote in d
     _draw_mote _context, mote
-    mass_sum += mass_from_radius mote.radius
+    mass_sum += _mass_from_radius mote.radius
 
   _text_top _context, 'left'
   _context.fillText (''+mass_sum)[0..10], _a*0.01, _a*0.99
 
   if _strain?
-    ejects = _find_food _context, d
+    ejects = _doit _context, d
     p = {strain: _strain, ejects: ejects}
     _sock.emit 'ejects', p
 
 _draw_mote = (__, mote) ->
   strain = Strains[mote.strain]
   {x: x, y: y, vx: vx, vy: vy, radius: r} = mote
-  [nx, ny] = norm vx, vy
-  __.strokeStyle = __.fillStyle =
-  if mote.hl
-    one.color(_white).cssa()
-  else
-    strain.color
-
+  [nx, ny] = _norm vx, vy
+  __.strokeStyle = __.fillStyle = strain.color
   __.beginPath()
   __.arc _a*x, _a*y, _a*r, 0, 2*Math.PI, no
   __.fill()
 
-  m = mass_from_radius r  
-  radius_label = "r #{(''+r)[0..7]}"
-  mass_label = "m #{(''+m)[0..7]}"
-  kinetic_label = "k #{(''+(m*vx))[0..7]} #{(''+(m*vy))[0..7]}"
-  label_y = _a*(y-r)
-  _text_top __, 'right'
-  __.fillText radius_label, _a*x, label_y
-  __.fillText mass_label, _a*x, label_y-_label_height
-  __.fillText kinetic_label, _a*x, label_y-2*_label_height
+  m = _mass_from_radius r
+  _m_annotate __, mote, "r #{(''+r)[0..7]}"
+  _m_annotate __, mote, "m #{(''+m)[0..7]}", line: 1
 
   __.lineWidth = 2
   __.beginPath()
