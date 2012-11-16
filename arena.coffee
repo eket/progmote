@@ -14,14 +14,21 @@ radius_from_mass = (m) -> Math.sqrt m/Math.PI
 m_mass = (a) -> mass_from_radius a.radius
 m_mass2 = (a,b) -> [(m_mass a), (m_mass b)]
 
-m_collide_with_view = (mote) ->
+m_collide_with_view = (mote, bounce=on) ->
   {x: x, y: y, vx: vx, vy: vy, radius: r} = mote
-  if 0>(d_x = _.min [x-r, 1-x-r])
-    mote.x += d_x * dir mote.vx
-    mote.vx *= -1
-  if 0>(d_y = _.min [y-r, 1-y-r])
-    mote.y += d_y * dir mote.vy
-    mote.vy *= -1
+  if 0 > d=x-r #left
+    mote.x -= d
+    mote.vx *= -1 if bounce
+  else if 0 > d=1-x-r #right
+    mote.x += d
+    mote.vx *= -1 if bounce
+
+  if 0 > d=y-r #top
+    mote.y -= d
+    mote.vy *= -1 if bounce
+  else if 0 > d=1-y-r #bottom
+    mote.y += d
+    mote.vy *= -1 if bounce
 
 m_displace = (mote, t) ->
   {vx: vx, vy: vy} = mote
@@ -74,7 +81,8 @@ m_eject = (mote, dm, dx, dy) ->
 setup_random = (n, random_mote) ->
   for i in [0...n]
     while true
-      break unless m_collide_with_view mote=random_mote()
+      break unless m_collide_with_view mote=random_mote(), off
+    ___ mote
     mote
 
 do_ais = (__) ->
@@ -84,7 +92,7 @@ do_ais = (__) ->
       if ejects.length <= selves.length
         _.each ejects, (e, i) ->
           {x:x, y:y} = e
-          if (s=selves[i])? and x and y
+          if (s=selves[i])? and x and y and s.radius > 0.001
             dm = 0.02 * m_mass s
             m_eject s, dm, x, y
     null
@@ -95,11 +103,12 @@ T = 50 # time per round
 rc = 0 # round counter
 motes = []
 _loop = _.throttle (->
-  for mote in motes
+  motes = _.filter motes, (mote) ->
+    return false if mote.radius <= 0
     m_displace mote, T/1000.0 
     m_collide_with_view mote
     m_collide_with_motes mote, motes
-  motes = _.reject motes, (m) -> m.radius <= 0
+    true
   rc += 1
 
   ___ "round #{rc}"
