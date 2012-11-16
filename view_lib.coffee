@@ -17,3 +17,10 @@ _text_top = (__, side, color) ->
   else
     _text_base __, color
   __.textAlign = side
+
+_m_annotate = (__, mote, txt, opts={}) ->
+  {x:x, y:y, radius:r} = mote
+  {side:side, color: color, line: line} = _.defaults opts, side: 'right', color: null, line: 0
+  _text_top __, side, color
+  [label_x, label_y] = [_a*x, _a*(y-r)-line*_label_height]
+  __.fillText txt, label_x, label_y
