@@ -59,9 +59,41 @@ food2 =
 
 mid =
   strain: 'orange'
-  radius: 0.2
+  radius: 0.02
   x: 0.5
   y: 0.5
+  vx: 0
+  vy: 0
+
+r1 =
+  strain: 'magenta'
+  radius: 0.05
+  x: 0.2
+  y: 0.2
+  vx: 0
+  vy: 0
+
+r2 =
+  strain: 'magenta'
+  radius: 0.07
+  x: 0.2
+  y: 0.4
+  vx: 0
+  vy: 0
+
+r3 =
+  strain: 'magenta'
+  radius: 0.09
+  x: 0.2
+  y: 0.6
+  vx: 0
+  vy: 0
+
+r4 =
+  strain: 'magenta'
+  radius: 0.11
+  x: 0.2
+  y: 0.8
   vx: 0
   vy: 0
 
@@ -69,3 +101,4 @@ exports.random_mote = random_mote
 exports.one = [mid, food1, food2]
 exports.two = [e_to_w, w_to_e]
 exports.three = [e_to_w, w_to_e, sw_to_ne]
+exports.race = [r1,r2,r3,r4]
