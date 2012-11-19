@@ -4,6 +4,17 @@ _sock = null
 _canvas = null
 _context = null
 
+_events =
+  down: ['mousedown', 'touchstart']
+  up: ['mouseup', 'touchend']
+  move: ['mousemove', 'touchmove']
+_get_x = (e, i=0) -> e.targetTouches?[i].pageX or e.clientX
+_get_y = (e, i=0) -> e.targetTouches?[i].pageY or e.clientY
+_add_event_listener = (el, event_key, fun) ->
+  el.addEventListener event, ((e) ->
+    fun e
+    e.preventDefault()), no for event in _events[event_key]
+
 _resize = ->
   _a = _.min [window.innerWidth, window.innerHeight]
   [_canvas.width, _canvas.height] = [_a, _a]
@@ -14,16 +25,30 @@ _init = ->
   _canvas = document.getElementById 'arena_canvas'
   window.addEventListener 'resize', _resize, no
   _context = _canvas.getContext '2d'
+  _add_event_listener _canvas, 'down', (e) ->
+    _pick_strain (_get_x e), (_get_y e)
 
   ___ 'initialize socket'
-  _sock = io.connect 'http://localhost:4567'
+  _sock = io.connect 'http://192.168.0.100:4567'
   _sock.on 'connect', ->
     ___ 'connected'
     #_set_strain 'orange'
     _sock.on 'update', (d) -> _update d
   _resize()
 
+_send_ejects = (__, motes) ->
+  ejects = _doit __, motes
+  p = {strain: _strain, ejects: ejects}
+  _sock.emit 'ejects', p
+
+_pick_strain = (x, y) ->
+  picked = _.first _.sortBy _motes, (mote) -> _distance x, y, _a*mote.x, _a*mote.y
+  _set_strain picked.strain if picked?
+  _send_ejects _context, _motes
+
+_motes = null
 _update = (d) ->
+  _motes = d
   _clr _context, _a
 
   mass_sum = 0
@@ -34,10 +59,7 @@ _update = (d) ->
   _text_top _context, 'left'
   _context.fillText (''+mass_sum)[0..10], _a*0.01, _a*0.99
 
-  if _strain?
-    ejects = _doit _context, d
-    p = {strain: _strain, ejects: ejects}
-    _sock.emit 'ejects', p
+  _send_ejects _context, d if _strain?
 
 _draw_mote = (__, mote) ->
   strain = Strains[mote.strain]
