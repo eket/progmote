@@ -10,10 +10,12 @@ setup_random = (n, random_mote) ->
     mote
 
 do_ais = (__) ->
+  console.time 'ais'
   __ = _.map __, (ejects, strain) ->
     (_.each ejects, (angle, i) ->
       m.eject i, strain, motes, angle if angle?) if ejects?
     null
+  console.timeEnd 'ais'
   _loop()
 
 ais_wait_id = null
@@ -21,6 +23,7 @@ T = 50 # time per round
 rc = 0 # round counter
 motes = []
 _loop = _.throttle (->
+  console.time 'loop'
   motes = _.filter motes, (mote) ->
     return false if mote.radius <= 0
     m.displace mote, T/1000.0
@@ -29,7 +32,7 @@ _loop = _.throttle (->
     true
   rc += 1
 
-  ___ "round #{rc}"
+  console.timeEnd 'loop'
   s.emit 'update', motes for s in socks
   ais_wait_id = setTimeout (->
     ___ 'ais timeout'
@@ -53,9 +56,9 @@ io.sockets.on 'connection', (s) ->
       clearTimeout ais_wait_id
       do_ais ais
 
+  #motes = Fixtures.one
   motes = setup_random 20, Fixtures.random_mote
   _.each motes, (m) -> m.vx = m.vy = 0
 
-  #motes = Fixtures.one
   ___ 'connected'
   _loop() unless rc > 0
