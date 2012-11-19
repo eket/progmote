@@ -35,7 +35,7 @@ _ai_draw_targets = (__, mote, targets) ->
     __.stroke()
 
 _last_eject = []
-_eject_throttle = 5000
+_eject_throttle = 2000
 _m_wait_eject = (i, now) ->
   if (last=_last_eject[i])?
     last+_eject_throttle-now
@@ -43,30 +43,32 @@ _m_wait_eject = (i, now) ->
     0
 
 _ai_motes = null
-_done = null
 _doit = (__, motes) ->
   #_ai_motes = motes
+  console.time 'doit'
   now = _now()
   sames = _.filter motes, _same_strain
   others = _.reject motes, _same_strain
 
-  _done = others.length is 0 and sames.length is 1 if not _done
-  return [{x:-1, y:-1}] if _done
+  r = if others.length is 0
+    _.map sames, -> (now%1000)/500*Math.PI
+  else
+    _.map sames, (mote, i) ->
+      {x:x, y:y, vx:vx, vy:vy, radius:r} = mote
+      if r > 0.01
+        targets = _.sortBy (_.filter others, (other) ->
+          other.radius < r), (other) ->
+            _distance2 mote, other
 
-  _.map sames, (mote, i) ->
-    {x:x, y:y, vx:vx, vy:vy, radius:r} = mote
-    if r > 0.01
-      targets = _.sortBy (_.filter others, (other) ->
-        other.radius < r), (other) ->
-          _distance2 mote, other
+        wait = _m_wait_eject i, now
+        _ai_draw_counter __, mote, wait
+        _ai_draw_targets __, mote, targets
 
-      wait = _m_wait_eject i, now
-      _ai_draw_counter __, mote, wait
-      _ai_draw_targets __, mote, targets
-
-      if targets.length > 0 and wait <= 0
-        _last_eject[i] = now
-        target = targets[0]
-        {x: x-target.x, y:y-target.y}
-      else {}
-    else {}
+        if targets.length > 0 and wait <= 0
+          _last_eject[i] = now
+          target = targets[0]
+          Math.PI + Math.atan2 target.y-y, target.x-x
+        else null
+      else null
+  console.timeEnd 'doit'
+  r
