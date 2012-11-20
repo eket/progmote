@@ -1,5 +1,5 @@
 _ = require 'underscore'
-g = require './geom.js'
+g = require './geom'
 
 sort2 = (a,b) -> if a > b then [b,a] else [a,b]
 sort_by2 = (a,b,f) -> if (f a) > (f b) then [b,a] else [a,b]
@@ -7,7 +7,7 @@ sort_by2 = (a,b,f) -> if (f a) > (f b) then [b,a] else [a,b]
 exports.fun_mass = (r) -> r*r*Math.PI
 exports.fun_mass_inv = (m) -> Math.sqrt m/Math.PI
 
-exports.strains = _.keys (require './strains.js').strains
+exports.strains = _.keys (require './static/js/strains').strains
 exports.distance = (mote, other) ->
   Math.sqrt (Math.pow other.x-mote.x, 2)+(Math.pow other.y-mote.y, 2)
 

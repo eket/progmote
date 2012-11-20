@@ -9,7 +9,8 @@
       "onecolor": "*",
       "underscore": "*",
       "foreman": "*",
-      "watcher": "*"
+      "watcher": "*",
+      "jade": "*"
   },
   "repository": {
     "type": "git",

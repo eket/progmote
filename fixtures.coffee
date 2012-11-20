@@ -1,4 +1,4 @@
-strains = Object.keys (require './strains.js').strains
+strains = Object.keys (require './static/js/strains').strains
 random_sign = -> if Math.random() > 0.5 then 1 else -1
 
 random_mote = ->

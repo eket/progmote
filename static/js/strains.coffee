@@ -17,3 +17,4 @@ Strains =
     color: 'rgba(133,153,0,1.0)'
 
 exports.strains = Strains if exports?
+window.Strains = Strains if window?

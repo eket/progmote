@@ -1,6 +1,6 @@
 ___ = (x) -> console.log x
 _ = require 'underscore'
-m = require './mote.js'
+m = require './mote'
 
 setup_random = (n, random_mote) ->
   for i in [0...n]
@@ -38,11 +38,13 @@ _loop = _.throttle (->
     ___ 'ais timeout'
     do_ais ais), 2000), 30
 
-Fixtures = require './fixtures.js'
+Fixtures = require './fixtures'
 
 ais = {}
 socks = []
+
 io = (require 'socket.io').listen 4567, 'log level': 1
+
 io.sockets.on 'connection', (s) ->
   socks.push s
   s.on 'strain', (d) ->
@@ -62,3 +64,5 @@ io.sockets.on 'connection', (s) ->
 
   ___ 'connected'
   _loop() unless rc > 0
+
+#module.exports = arena
