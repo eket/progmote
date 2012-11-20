@@ -36,8 +36,8 @@ window._init = ->
     _sock.on 'update', (d) -> _update d
   _resize()
 
-window._send_ejects = (__, motes) ->
-  ejects = _doit __, motes
+window._send_ejects = (__, motes, rc) ->
+  ejects = _doit __, motes, rc
   p = {strain: _strain, ejects: ejects}
   _sock.emit 'ejects', p
 
@@ -48,18 +48,19 @@ window._pick_strain = (x, y) ->
 
 window._motes = null
 window._update = (d) ->
-  window._motes = d
+  [motes, rc] = d
+  window._motes = motes
   _clr _context, _a
 
   mass_sum = 0
-  for mote in d
+  for mote in motes
     _draw_mote _context, mote
     mass_sum += _mass_from_radius mote.radius
 
   _text_top _context, 'left'
   _context.fillText (''+mass_sum)[0..10], _a*0.01, _a*0.99
 
-  _send_ejects _context, d if _strain?
+  _send_ejects _context, motes, rc if _strain?
 
 window._draw_mote = (__, mote) ->
   strain = Strains[mote.strain]

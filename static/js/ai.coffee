@@ -1,6 +1,5 @@
 window._distance = (x0, y0, x1, y1) -> Math.sqrt (Math.pow x1-x0, 2)+(Math.pow y1-y0, 2)
 window._distance2 = (a, b) -> _distance a.x, a.y, b.x, b.y
-window._now = -> Date.now()
 
 window._strain = null
 window._set_strain = (strain) ->
@@ -35,23 +34,23 @@ window._ai_draw_targets = (__, mote, targets) ->
     __.stroke()
 
 window._last_eject = []
-window._eject_throttle = 2000
+window._eject_throttle = 60
 window._m_wait_eject = (i, now) ->
   if (last=_last_eject[i])?
-    last+_eject_throttle-now
+    last + _eject_throttle - now
   else
     0
 
 window._ai_motes = null
-window._doit = (__, motes) ->
+window._doit = (__, motes, rc) ->
   #window._ai_motes = motes
   console.time 'doit'
-  now = _now()
+  now = rc
   sames = _.filter motes, _same_strain
   others = _.reject motes, _same_strain
 
   r = if others.length is 0
-    _.map sames, -> (now%1000)/500*Math.PI
+    _.map sames, -> (now % 1000) / 500 * Math.PI
   else
     _.map sames, (mote, i) ->
       {x:x, y:y, vx:vx, vy:vy, radius:r} = mote

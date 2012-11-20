@@ -1,0 +1,17 @@
+html
+  head
+    script(src='/static/js/lib/socket.io.min.js')
+    script(src='/static/js/lib/underscore-min.js')
+    script(src='/static/js/lib/one-color.js')
+    script(src='/static/js/lib/coffee-script.js')
+    script(src='/static/js/view_lib.coffee', type="text/coffeescript")
+    script(src='/static/js/ai.coffee', type="text/coffeescript")
+    script(src='/static/js/strains.coffee', type="text/coffeescript")
+    script(src='/static/js/view.coffee', type="text/coffeescript")
+
+    style
+      *{margin:0;padding:0}
+      #arena_canvas{background:#002b36;}
+  body
+    canvas#arena_canvas
+    script(type="text/coffeescript") _init()

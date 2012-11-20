@@ -33,7 +33,7 @@ _loop = _.throttle (->
   rc += 1
 
   console.timeEnd 'loop'
-  s.emit 'update', motes for s in socks
+  s.emit 'update', [motes, rc] for s in socks
   ais_wait_id = setTimeout (->
     ___ 'ais timeout'
     do_ais ais), 2000), 30
@@ -66,3 +66,5 @@ io.sockets.on 'connection', (s) ->
   _loop() unless rc > 0
 
 #module.exports = arena
+
+

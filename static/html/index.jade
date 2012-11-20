@@ -1,17 +1,107 @@
-html
+!!!5
+html(lang="en")
   head
-    script(src='/static/js/lib/socket.io.min.js')
-    script(src='/static/js/lib/underscore-min.js')
-    script(src='/static/js/lib/one-color.js')
-    script(src='/static/js/lib/coffee-script.js')
-    script(src='/static/js/view_lib.coffee', type="text/coffeescript")
-    script(src='/static/js/ai.coffee', type="text/coffeescript")
-    script(src='/static/js/strains.coffee', type="text/coffeescript")
-    script(src='/static/js/view.coffee', type="text/coffeescript")
+    title prog^mote
 
-    style
-      *{margin:0;padding:0}
-      #arena_canvas{background:#002b36;}
+    link(href="/static/css/lib/bootstrap.css", rel="stylesheet")
+    //link(href="/static/css/lib/bootstrap-responsive.css", rel="stylesheet")
+    link(href="/static/css/lib/codemirror/codemirror.css", rel="stylesheet")
+    link(href="/static/css/lib/codemirror/theme/solarized-dark.css", rel="stylesheet")
+
+    link(href="/static/css/style.css", rel="stylesheet")
+
+
   body
-    canvas#arena_canvas
-    script(type="text/coffeescript") _init()
+
+    .navbar.navbar-static-top.navbar-inverse
+      .navbar-inner
+        .row-fluid
+          .span6
+            a.brand(href="#") prog^mote
+            ul.nav
+              li.dropdown
+                a.dropdown-toggle(href="#", data-toggle="dropdown")
+                  | mode: solo 
+                  b.caret
+                ul.dropdown-menu
+                  li: a(href="#") solo
+                  li: a(href="#") challenge
+                  li: a(href="#") multi
+
+            .gui
+              .code
+          .span6
+            .gui
+              .mote
+    #ct.container-fluid
+
+      #cols.row-fluid
+        #col-code.span6
+          #codemirror
+
+          .btn-toolbar
+            .btn-group.pull-left
+              a.btn.dropdown-toggle(href="#", data-toggle="dropdown")
+                | lang: coffeescript 
+                b.caret
+              ul.dropdown-menu.bottom-up
+                li: a(href="#") javascript
+                li: a(href="#") coffeescript
+                li: a(href="#") lisp
+            .btn-group.pull-right
+              button.btn Run &nbsp; Ctrl + Enter
+            .btn-group.pull-right
+              a.btn.dropdown-toggle(href="#", data-toggle="dropdown")
+                | examples 
+                b.caret
+              ul.dropdown-menu.bottom-up
+                li: a(href="#") hello ai
+                li: a(href="#") greedy
+                li: a(href="#") smart
+                //
+            //
+              .progress.progress-striped.active(style="width: 100px")
+                .bar(style="width: 40%")
+
+        #col-mote.span6 
+          #mote
+            iframe(src="arena.html", width="100%", height="100%", style="border:0")
+          .btn-toolbar
+            .btn-group.pull-left
+              a.btn.dropdown-toggle(href="#", data-toggle="dropdown")
+                | rules: arena 
+                b.caret
+              ul.dropdown-menu.bottom-up
+                li: a(href="#") arena
+                li: a(href="#") retro
+                li: a(href="#") zombie
+            .btn-group.pull-left
+              a.btn.dropdown-toggle(href="#", data-toggle="dropdown")
+                | view: webdl 
+                b.caret
+              ul.dropdown-menu.bottom-up
+                li: a(href="#") dimension
+                li: a(href="#") webdl
+                li: a(href="#") immerse
+            //
+              .progress.progress-striped.active(style="width: 100px")
+                .bar(style="width: 40%")
+
+
+
+    script(src="/static/js/lib/socket.io.min.js")
+    //script(src="/static/js/lib/zepto.min.js")
+    script(src="/static/js/lib/jquery.min.js")
+    script(src="/static/js/lib/bootstrap.js")
+    script(src="/static/js/lib/leaflet.js")
+    script(src="/static/js/lib/lodash.min.js")
+    script(src="/static/js/lib/backbone-min.js")
+    script(src="/static/js/lib/dat.gui.min.js")
+
+    script(src="/static/js/lib/codemirror/codemirror.js")
+    script(src="/static/js/lib/codemirror/mode/javascript/javascript.js")
+    script(src="/static/js/lib/codemirror/mode/coffeescript/coffeescript.js")
+
+    script(src="/static/js/lib/coffee-script.js")
+    script(src="/static/js/editor.coffee", type="text/coffee-script")
+
