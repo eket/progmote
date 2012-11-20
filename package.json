@@ -4,9 +4,12 @@
   "description": "ek",
   "main": "arena.js",
   "dependencies": {
+      "coffee-script": "*",
       "socket.io": "*",
       "onecolor": "*",
-      "underscore": "*"
+      "underscore": "*",
+      "foreman": "*",
+      "watcher": "*"
   },
   "repository": {
     "type": "git",

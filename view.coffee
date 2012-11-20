@@ -29,7 +29,7 @@ _init = ->
     _pick_strain (_get_x e), (_get_y e)
 
   ___ 'initialize socket'
-  _sock = io.connect 'http://192.168.0.100:4567'
+  _sock = io.connect ':4567'
   _sock.on 'connect', ->
     ___ 'connected'
     #_set_strain 'orange'
