@@ -1,4 +1,4 @@
-node: node_modules/coffee-script/bin/coffee -w arena.coffee
+node: node_modules/coffee-script/bin/coffee arena.coffee # --nodejs --prof
 http: python2 -m SimpleHTTPServer
-jade: node_modules/watcher/bin/watcher static/html/index.jade   
-jade: node_modules/watcher/bin/watcher static/html/arena.jade   
+jade: node_modules/watcher/bin/watcher static/html
+coffee: coffee -wc static/js/*.coffee

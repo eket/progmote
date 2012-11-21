@@ -49,7 +49,7 @@ html(lang="en")
                 li: a(href="#") coffeescript
                 li: a(href="#") lisp
             .btn-group.pull-right
-              button.btn Run &nbsp; Ctrl + Enter
+              button.run.btn Run &nbsp; Ctrl + Enter
             .btn-group.pull-right
               a.btn.dropdown-toggle(href="#", data-toggle="dropdown")
                 | examples 
@@ -66,6 +66,7 @@ html(lang="en")
         #col-mote.span6 
           #mote
             iframe(src="arena.html", width="100%", height="100%", style="border:0")
+        //
           .btn-toolbar
             .btn-group.pull-left
               a.btn.dropdown-toggle(href="#", data-toggle="dropdown")
@@ -83,7 +84,7 @@ html(lang="en")
                 li: a(href="#") dimension
                 li: a(href="#") webdl
                 li: a(href="#") immerse
-            //
+            
               .progress.progress-striped.active(style="width: 100px")
                 .bar(style="width: 40%")
 
@@ -103,5 +104,6 @@ html(lang="en")
     script(src="/static/js/lib/codemirror/mode/coffeescript/coffeescript.js")
 
     script(src="/static/js/lib/coffee-script.js")
-    script(src="/static/js/editor.coffee", type="text/coffee-script")
+    script(src="/static/js/editor.js")
+    iframe#aicode(src="/static/js/ai.txt", style="display:none")
 

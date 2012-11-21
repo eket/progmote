@@ -36,15 +36,17 @@ window._init = ->
     _sock.on 'update', (d) -> _update d
   _resize()
 
-window._send_ejects = (__, motes, rc) ->
-  ejects = _doit __, motes, rc
-  p = {strain: _strain, ejects: ejects}
+window._ai_strain = null
+window._send_ejects = (__, motes, rc, strain) ->
+  ejects = _doit __, motes, rc, strain
+  p = {strain: strain, ejects: ejects}
   _sock.emit 'ejects', p
 
 window._pick_strain = (x, y) ->
   picked = _.first _.sortBy _motes, (mote) -> _distance x, y, _a*mote.x, _a*mote.y
-  _set_strain picked.strain if picked?
-  _send_ejects _context, _motes
+  window._ai_strain = picked.strain if picked?
+  ___ window._ai_strain
+  _send_ejects _context, _motes, 0
 
 window._motes = null
 window._update = (d) ->
@@ -60,7 +62,7 @@ window._update = (d) ->
   _text_top _context, 'left'
   _context.fillText (''+mass_sum)[0..10], _a*0.01, _a*0.99
 
-  _send_ejects _context, motes, rc if _strain?
+  _send_ejects _context, motes, rc, _ai_strain if _ai_strain?
 
 window._draw_mote = (__, mote) ->
   strain = Strains[mote.strain]

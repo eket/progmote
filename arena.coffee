@@ -47,9 +47,6 @@ io = (require 'socket.io').listen 4567, 'log level': 1
 
 io.sockets.on 'connection', (s) ->
   socks.push s
-  s.on 'strain', (d) ->
-    strain = d
-    ais[strain] = null
   s.on 'ejects', (d) ->
     {strain: strain, ejects: ejects} = d
     ais[strain] = ejects
