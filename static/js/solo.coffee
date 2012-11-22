@@ -1,12 +1,16 @@
-api = window._solo = {}
-_lib = window._view_lib
-view = window._view
-ai = window._ai
-arena = window._arena
-fx = window._fixtures
+[API, VH, V, AI, AR, F, G] =
+  [window._solo = {},
+  window._view_helper,
+  window._view,
+  window._ai,
+  window._arena,
+  window._fixtures,
+  window._geom]
 
-api.done = no
-api.ai_strain = null
+# semaphore to signal there's nothing to do
+API.done = no
+# current strain of the ai
+API.ai_strain = null
 
 context = null
 motes = []
@@ -15,32 +19,36 @@ time = 0
 
 _loop = _.throttle (->
   ___ '.'
-  view.update motes
+  V.update motes, time
 
   ais = {}
-  if api.ai_strain?
-    move = ai.doit context, motes, time, api.ai_strain
-    api.done = move is 'done'
-    ais[api.ai_strain] = move unless api.done
+  if API.ai_strain?
+    # run the ai
+    move = AI.doit context, motes, time, API.ai_strain
+    API.done = move is 'done'
+    ais[API.ai_strain] = move unless API.done
 
-  motes = arena.step motes, ais, dt
+  # get the next <motes>
+  motes = AR.step motes, ais, dt
   time += dt
-  _loop() unless api.done), 30
+  _loop() unless API.done), 30
 
-api.init = (cvs, ctx) ->
-  _lib.add_event_listener cvs, 'down', (e) ->
-    [x, y] = [(_lib.get_x e), (_lib.get_y e)]
+# set up callbacks for the ai
+API.init = (cvs, ctx) ->
+  VH.add_event_listener cvs, 'down', (e) ->
+    [x, y] = [(VH.get_x e), (VH.get_y e)]
     pick_strain x, y
-  _lib.add_event_listener cvs, 'move', (e) ->
-    prog = (_lib.get_x e)/view.a
+  VH.add_event_listener cvs, 'move', (e) ->
+    prog = (VH.get_x e)/V.a
     dt = prog/10
 
   context = ctx
-  motes = arena.setup_random 50, fx.random_mote
+
+  motes = AR.setup_random 50, F.random_mote
   _.each motes, (m) -> m.vx = m.vy = 0
   _loop()
 
 pick_strain = (x, y) ->
   picked = _.first _.sortBy motes, (mote) ->
-    _lib.distance x, y, view.a*mote.x, view.a*mote.y
-  api.ai_strain = picked.strain if picked?
+    G.distance x, y, V.a*mote.x, V.a*mote.y
+  API.ai_strain = picked.strain if picked?

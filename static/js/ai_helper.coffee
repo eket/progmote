@@ -1,35 +1,34 @@
-api = window._ai_helper = {}
-view = window._view
-_lib = window._view_lib
+[API, V, M, G] =
+  [window._ai_helper = {},
+  window._view,
+  window._mote,
+  window._geom]
 
-api.distance = (a, b) -> _lib.distance a.x, a.y, b.x, b.y
-api.same = (strain) -> (m) -> m.strain is strain
+API.same = (strain) -> (m) -> m.strain is strain
 
-black = one.color '#000'
 white = one.color '#fff'
-red = one.color '#f00'
-counter_darken = black.alpha 0.2
-counter_lighten = white.alpha 0.2
+red = 'rgb(255,0,0)'
+counter_darken = 'rgba(0,0,0,0.5)'
 
-api.draw_counter = (ctx, mote, prog) ->
+API.draw_counter = (ctx, mote, prog) ->
   {x:x, y:y, radius:r} = mote
-  ctx.fillStyle = (if prog > 0 then counter_darken else counter_lighten).cssa()
-  ctx.beginPath()
-  ctx.moveTo view.a*x, view.a*y
+  if prog > 0
+    passed_angle = (1-prog)*2*G.pi
+    start_angle = -0.5*G.pi
+    ctx.fillStyle = counter_darken
+    ctx.beginPath()
+    ctx.moveTo V.a*x, V.a*y
+    ctx.arc V.a*x, V.a*y, V.a*r, start_angle, start_angle+passed_angle, no
+    ctx.fill()
 
-  passed_angle = (1-prog)*2*Math.PI
-  start_angle = -0.5*Math.PI
-  ctx.arc view.a*x, view.a*y, view.a*r, start_angle, start_angle+passed_angle, no
-  ctx.fill()
-
-api.draw_targets = (ctx, mote, targets) ->
+API.draw_targets = (ctx, mote, targets) ->
+  ctx.lineWidth = 1
   _.each targets, (target, i) ->
     ctx.strokeStyle =
-      if i is 0
-        red.css()
+      if i is 0 then red
       else (white.alpha 1-i/targets.length).cssa()
     ctx.beginPath()
-    ctx.moveTo view.a*mote.x, view.a*mote.y
-    ctx.lineTo view.a*target.x, view.a*target.y
+    ctx.moveTo V.a*mote.x, V.a*mote.y
+    ctx.lineTo V.a*target.x, V.a*target.y
     ctx.stroke()
 

@@ -1,4 +1,4 @@
-[api, _, g, strains] =
+[API, _, G, S] =
   if exports?
     [exports._mote = {},
     (require 'underscore'),
@@ -13,14 +13,14 @@
 sort2 = (a,b) -> if a > b then [b,a] else [a,b]
 sort_by2 = (a,b,f) -> if (f a) > (f b) then [b,a] else [a,b]
 
-fun_mass = (r) -> r*r*Math.PI
-fun_mass_inv = (m) -> Math.sqrt m/Math.PI
-distance = (mote, other) -> g.distance mote.x, mote.y, other.x, other.y
+API.fun_mass = (r) -> r*r*G.pi
+API.fun_mass_inv = (m) -> Math.sqrt m/G.pi
+distance = (mote, other) -> G.distance mote.x, mote.y, other.x, other.y
 
-mass = (mote) -> fun_mass mote.radius
+mass = (mote) -> API.fun_mass mote.radius
 mass2 = (mote, other) -> [(mass mote), (mass other)]
 
-api.collide_with_view = (mote, bounce=on) ->
+API.collide_with_view = (mote, bounce=on) ->
   {x: x, y: y, vx: vx, vy: vy, radius: r} = mote
   if 0 > d=x-r #left
     mote.x -= d
@@ -35,7 +35,7 @@ api.collide_with_view = (mote, bounce=on) ->
     mote.y += d
     mote.vy *= -1 if bounce
 
-api.displace = (mote, t) ->
+API.displace = (mote, t) ->
   mote.x += mote.vx * t
   mote.y += mote.vy * t
 
@@ -44,7 +44,7 @@ overlaps = (mote, other) ->
   sum_r = mote.radius + other.radius
   if dist < sum_r then [dist, sum_r-dist] else no
 
-api.collide_mote = (mote, motes) ->
+API.collide_mote = (mote, motes) ->
   others = _.sortBy (_.reject motes, (other) ->
     other is mote or not overlaps mote, other), 'radius'
   collision mote, others.pop() unless others.length < 1
@@ -54,26 +54,26 @@ collision = (mote, other) ->
   d = distance loser, winner
   [m0, m1] = mass2 loser, winner
   sum_mass = m0+m1
-  r0 = 1/2*(d+Math.sqrt(2*sum_mass/Math.PI - d*d))
+  r0 = 1/2*(d+Math.sqrt(2*sum_mass/G.pi - d*d))
   r1 = d-r0
-  [r1, r0] = [0, fun_mass_inv sum_mass] if r1 < 0
+  [r1, r0] = [0, API.fun_mass_inv sum_mass] if r1 < 0
   [loser.radius, winner.radius] = sort2 r0, r1
   [m0_, m1_] = mass2 loser, winner
   dm = m0-m0_
   winner.vx = (m1*winner.vx+(dm)*loser.vx)/m1_
   winner.vy = (m1*winner.vy+(dm)*loser.vy)/m1_
 
-api.eject = (i, strain, motes, angle) ->
+API.eject = (i, strain, motes, angle) ->
   mote = (_.where motes, strain: strain)[i]
   {x: x0, y: y0, vx: vx0, vy: vy0, radius: r0} = mote
   return if r0 < 0.03
-  m0 = fun_mass r0
+  m0 = API.fun_mass r0
   dm = 0.02*m0
-  angle += Math.PI if angle < 0
+  angle += G.pi if angle < 0
   [dx, dy] = [(Math.cos angle), (Math.sin angle)]
-  dr = fun_mass_inv dm
+  dr = API.fun_mass_inv dm
   m0_ = m0-dm
-  r0_ = fun_mass_inv m0_
+  r0_ = API.fun_mass_inv m0_
   dmote =
     strain: mote.strain
     radius: dr

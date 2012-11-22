@@ -1,4 +1,4 @@
-[api, _, strains] =
+[API, _, S] =
   if exports?
     [exports._fixtures = {},
     (require 'underscore'),
@@ -10,8 +10,8 @@
 
 random_sign = -> if Math.random() > 0.5 then 1 else -1
 
-api.random_mote = ->
-  strain: strains[Math.floor Math.random() * strains.length]
+API.random_mote = ->
+  strain: S[Math.floor Math.random() * S.length]
   radius: 0.01+0.05*Math.random()
   x: Math.random()
   y: Math.random()
@@ -106,7 +106,7 @@ r4 =
   vx: 0
   vy: 0
 
-api.one = [mid, food1, food2]
-api.two = [e_to_w, w_to_e]
-api.three = [e_to_w, w_to_e, sw_to_ne]
-api.race = [r1,r2,r3,r4]
+API.one = [mid, food1, food2]
+API.two = [e_to_w, w_to_e]
+API.three = [e_to_w, w_to_e, sw_to_ne]
+API.race = [r1,r2,r3,r4]
