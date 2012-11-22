@@ -48,7 +48,8 @@ api.doit = (__, motes, rc, strain) ->
   others = _.reject motes, same strain
 
   r = if others.length is 0
-    _.map sames, -> (now % 1000) * Math.PI
+    'done'
+    #_.map sames, -> (now % 1000) * Math.PI
   else
     _.map sames, (mote, i) ->
       {x:x, y:y, vx:vx, vy:vy, radius:r} = mote
