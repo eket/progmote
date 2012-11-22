@@ -1,20 +1,26 @@
-_ = require 'underscore'
-g = require './geom'
+[api, _, g, strains] =
+  if exports?
+    [exports._mote = {},
+    (require 'underscore'),
+    (require './geom')._geom,
+    (require './strains')._strains.list]
+  else
+    [window._mote = {},
+    window._,
+    window._geom,
+    window._strains.list]
 
 sort2 = (a,b) -> if a > b then [b,a] else [a,b]
 sort_by2 = (a,b,f) -> if (f a) > (f b) then [b,a] else [a,b]
 
-exports.fun_mass = (r) -> r*r*Math.PI
-exports.fun_mass_inv = (m) -> Math.sqrt m/Math.PI
+fun_mass = (r) -> r*r*Math.PI
+fun_mass_inv = (m) -> Math.sqrt m/Math.PI
+distance = (mote, other) -> g.distance mote.x, mote.y, other.x, other.y
 
-exports.strains = _.keys (require './static/js/strains')._strains
-exports.distance = (mote, other) ->
-  Math.sqrt (Math.pow other.x-mote.x, 2)+(Math.pow other.y-mote.y, 2)
+mass = (mote) -> fun_mass mote.radius
+mass2 = (mote, other) -> [(mass mote), (mass other)]
 
-exports.mass = (mote) -> exports.fun_mass mote.radius
-exports.mass2 = (mote, other) -> [(exports.mass mote), (exports.mass other)]
-
-exports.collide_with_view = (mote, bounce=on) ->
+api.collide_with_view = (mote, bounce=on) ->
   {x: x, y: y, vx: vx, vy: vy, radius: r} = mote
   if 0 > d=x-r #left
     mote.x -= d
@@ -29,45 +35,46 @@ exports.collide_with_view = (mote, bounce=on) ->
     mote.y += d
     mote.vy *= -1 if bounce
 
-exports.displace = (mote, t) ->
+api.displace = (mote, t) ->
   mote.x += mote.vx * t
   mote.y += mote.vy * t
 
-exports.overlaps = (mote, other) ->
-  dist = exports.distance mote, other
+overlaps = (mote, other) ->
+  dist = distance mote, other
   sum_r = mote.radius + other.radius
   if dist < sum_r then [dist, sum_r-dist] else no
 
-exports.collide_mote = (mote, motes) ->
+api.collide_mote = (mote, motes) ->
   others = _.sortBy (_.reject motes, (other) ->
-    other is mote or not exports.overlaps mote, other), 'radius'
-  exports.collision mote, others.pop() unless others.length < 1
+    other is mote or not overlaps mote, other), 'radius'
+  collision mote, others.pop() unless others.length < 1
 
-exports.collision = (mote, other) ->
+collision = (mote, other) ->
   [loser, winner] = sort_by2 mote, other, (m) -> m.radius
-  d = exports.distance loser, winner
-  [m0, m1] = exports.mass2 loser, winner
+  d = distance loser, winner
+  [m0, m1] = mass2 loser, winner
   sum_mass = m0+m1
   r0 = 1/2*(d+Math.sqrt(2*sum_mass/Math.PI - d*d))
   r1 = d-r0
-  [r1, r0] = [0, exports.fun_mass_inv sum_mass] if r1 < 0
+  [r1, r0] = [0, fun_mass_inv sum_mass] if r1 < 0
   [loser.radius, winner.radius] = sort2 r0, r1
-  [m0_, m1_] = exports.mass2 loser, winner
+  [m0_, m1_] = mass2 loser, winner
   dm = m0-m0_
   winner.vx = (m1*winner.vx+(dm)*loser.vx)/m1_
   winner.vy = (m1*winner.vy+(dm)*loser.vy)/m1_
 
-exports.eject = (i, strain, motes, angle) ->
+api.eject = (i, strain, motes, angle) ->
+  ___ [i, strain, motes, angle]
   mote = (_.where motes, strain: strain)[i]
   {x: x0, y: y0, vx: vx0, vy: vy0, radius: r0} = mote
   return if r0 < 0.03
-  m0 = exports.fun_mass r0
+  m0 = fun_mass r0
   dm = 0.02*m0
   angle += Math.PI if angle < 0
   [dx, dy] = [(Math.cos angle), (Math.sin angle)]
-  dr = exports.fun_mass_inv dm
+  dr = fun_mass_inv dm
   m0_ = m0-dm
-  r0_ = exports.fun_mass_inv m0_
+  r0_ = fun_mass_inv m0_
   dmote =
     strain: mote.strain
     radius: dr
