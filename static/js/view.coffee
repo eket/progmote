@@ -20,7 +20,7 @@ window._resize = ->
   [_canvas.width, _canvas.height] = [_a, _a]
   ___ "resized canvas to #{_a}x#{_a}"
 
-window._init = ->
+api.init = ->
   ___ 'initialize canvas'
   window._canvas = document.getElementById 'arena_canvas'
   window.addEventListener 'resize', _resize, no
