@@ -12,25 +12,20 @@ api.setup_random = (n, random_mote) ->
   for i in [0...n]
     while true
       break unless m.collide_with_view mote=random_mote(), off
-    #console.log mote
     mote
 
-api.step = (motes, t) ->
-  #console.time 'step'
+api.step = (motes, ais, t) ->
+  do_ais ais, motes
   motes = _.filter motes, (mote) ->
     return false if mote.radius <= 0
     m.displace mote, t
     m.collide_with_view mote
     m.collide_mote mote, motes
     true
-  #console.timeEnd 'step'
   motes
 
-api.do_ais = (ais, motes) ->
-  #console.time 'ais'
-  ais = _.map ais, (ejects, strain) ->
-    (_.each ejects, (angle, i) ->
-      m.eject i, strain, motes, angle if angle?) if ejects?
-    null
-  #console.timeEnd 'ais'
-  true
+do_ais = (ais, motes) ->
+  _.each ais, (ejects, strain) ->
+    if ejects?
+      _.each ejects, (angle, i) ->
+        m.eject i, strain, motes, angle if angle?
