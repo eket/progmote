@@ -26,6 +26,9 @@ api.init = (cvs, ctx) ->
   _lib.add_event_listener cvs, 'down', (e) ->
     [x, y] = [(_lib.get_x e), (_lib.get_y e)]
     pick_strain x, y
+  _lib.add_event_listener cvs, 'move', (e) ->
+    prog = (_lib.get_x e)/view.a
+    dt = prog/10
   context = ctx
   motes = arena.setup_random 10, fx.random_mote
   _.each motes, (m) -> m.vx = m.vy = 0
