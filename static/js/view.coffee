@@ -64,8 +64,8 @@ window._update = (d) ->
 
   _send_ejects _context, motes, rc, _ai_strain if _ai_strain?
 
-window._draw_mote = (__, mote) ->
-  strain = Strains[mote.strain]
+draw_mote = (__, mote) ->
+  strain = window._strains[mote.strain]
   {x: x, y: y, vx: vx, vy: vy, radius: r} = mote
   [nx, ny] = _norm vx, vy
   __.strokeStyle = __.fillStyle = strain.color

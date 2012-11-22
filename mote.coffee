@@ -7,7 +7,7 @@ sort_by2 = (a,b,f) -> if (f a) > (f b) then [b,a] else [a,b]
 exports.fun_mass = (r) -> r*r*Math.PI
 exports.fun_mass_inv = (m) -> Math.sqrt m/Math.PI
 
-exports.strains = _.keys (require './static/js/strains').strains
+exports.strains = _.keys (require './static/js/strains')._strains
 exports.distance = (mote, other) ->
   Math.sqrt (Math.pow other.x-mote.x, 2)+(Math.pow other.y-mote.y, 2)
 
