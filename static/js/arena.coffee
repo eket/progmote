@@ -44,3 +44,21 @@ do_ais = (ais, motes) ->
     if ejects?
       _.each ejects, (angle, i) ->
         M.eject i, strain, motes, angle if angle?
+
+###
+window?.Arena = 
+  init: (seed) ->
+    @seed ?= (new Date()).getTime()
+    return {
+      tick: 0
+      motes: []
+    }
+
+  next: (state) ->
+    state.tick += 1
+    if state.tick < 100
+      state      
+    else 
+      null
+###
+
