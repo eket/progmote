@@ -54,7 +54,7 @@ window?.Arena =
       motes: []
     }
 
-  next: (state) ->
+  next: (state, cmds) ->
     state.tick += 1
     if state.tick < 100
       state      
