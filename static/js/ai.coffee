@@ -15,19 +15,19 @@ _ai_draw_counter = (__, mote, wait) ->
   {x:x, y:y, radius:r} = mote
   __.fillStyle = (if wait > 0 then _ai_counter_darken else _ai_counter_lighten).cssa()
   __.beginPath()
-  __.moveTo _a*x, _a*y
+  __.moveTo _view.a*x, _view.a*y
   passed = wait/_eject_throttle
   passed_a = (1-passed)*2*Math.PI
   start_a = -0.5*Math.PI
-  __.arc _a*x, _a*y, _a*r, start_a, start_a+passed_a, no
+  __.arc _view.a*x, _view.a*y, _view.a*r, start_a, start_a+passed_a, no
   __.fill()
 
 _ai_draw_targets = (__, mote, targets) ->
   _.each targets, (target, i) ->
     __.strokeStyle = if i is 0 then _c_red.css() else (_c_white.alpha 1-i/targets.length).cssa()
     __.beginPath()
-    __.moveTo _a*mote.x, _a*mote.y
-    __.lineTo _a*target.x, _a*target.y
+    __.moveTo _view.a*mote.x, _view.a*mote.y
+    __.lineTo _view.a*target.x, _view.a*target.y
     __.stroke()
 
 _last_eject = []
@@ -39,12 +39,13 @@ _m_wait_eject = (i, now) ->
     0
 
 _ai_motes = null
-window._doit = (__, motes, rc, strain) ->
+
+api.doit = (__, motes, rc, strain) ->
   #_ai_motes = motes
   console.time 'doit'
   now = rc
-  sames = _.filter motes, _same strain
-  others = _.reject motes, _same strain
+  sames = _.filter motes, same strain
+  others = _.reject motes, same strain
 
   r = if others.length is 0
     _.map sames, -> (now % 100) / 50 * Math.PI
@@ -54,7 +55,7 @@ window._doit = (__, motes, rc, strain) ->
       if r > 0.01
         targets = _.sortBy (_.filter others, (other) ->
           other.radius < r), (other) ->
-            _distance2 mote, other
+            distance2 mote, other
 
         wait = _m_wait_eject i, now
         _ai_draw_counter __, mote, wait
