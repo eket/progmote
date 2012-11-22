@@ -1,4 +1,5 @@
-Strains =
+api = (exports ? window)._strains = {}
+api.colors =
   yellow:
     color: 'rgba(181,137,0,1.0)'
   orange:
@@ -15,5 +16,4 @@ Strains =
     color: 'rgba(42,161,152,1.0)'
   green:
     color: 'rgba(133,153,0,1.0)'
-
-(exports ? window)._strains = Strains
+api.list = Object.keys api.colors
