@@ -31,7 +31,7 @@ _ai_draw_targets = (__, mote, targets) ->
     __.stroke()
 
 _last_eject = []
-_eject_throttle = 60
+_eject_throttle = 5
 _m_wait_eject = (i, now) ->
   if (last=_last_eject[i])?
     last + _eject_throttle - now
@@ -48,7 +48,7 @@ api.doit = (__, motes, rc, strain) ->
   others = _.reject motes, same strain
 
   r = if others.length is 0
-    _.map sames, -> (now % 100) / 50 * Math.PI
+    _.map sames, -> (now % 1000) / 500 * Math.PI
   else
     _.map sames, (mote, i) ->
       {x:x, y:y, vx:vx, vy:vy, radius:r} = mote
