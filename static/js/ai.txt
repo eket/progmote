@@ -1,1 +1,2 @@
-ai.coffee
+ai = (state, me) ->
+    42
