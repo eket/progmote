@@ -1,19 +1,10 @@
-# globals
-window._a = null
-window._sock = null
-window._canvas = null
-window._context = null
+api = window._view = {}
+_lib = window._view_lib
 
-window._events =
-  down: ['mousedown', 'touchstart']
-  up: ['mouseup', 'touchend']
-  move: ['mousemove', 'touchmove']
-window._get_x = (e, i=0) -> e.targetTouches?[i].pageX or e.clientX
-window._get_y = (e, i=0) -> e.targetTouches?[i].pageY or e.clientY
-window._add_event_listener = (el, event_key, fun) ->
-  el.addEventListener event, ((e) ->
-    fun e
-    e.preventDefault()), no for event in _events[event_key]
+api.a = null
+sock = null
+canvas = null
+context = null
 
 window._resize = ->
   window._a = _.min [window.innerWidth, window.innerHeight]

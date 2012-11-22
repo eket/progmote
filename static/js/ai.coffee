@@ -1,7 +1,9 @@
-window._distance = _distance = (x0, y0, x1, y1) -> Math.sqrt (Math.pow x1-x0, 2)+(Math.pow y1-y0, 2)
-_distance2 = (a, b) -> _distance a.x, a.y, b.x, b.y
+api = window._ai = {}
+_lib = window._view_lib
 
-_same = (strain) -> (m) -> m.strain is strain
+distance2 = (a, b) -> _lib.distance a.x, a.y, b.x, b.y
+
+same = (strain) -> (m) -> m.strain is strain
 
 _c_black = one.color '#000'
 _c_white = one.color '#fff'
