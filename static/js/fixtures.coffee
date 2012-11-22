@@ -1,7 +1,16 @@
-strains = Object.keys (require './static/js/strains')._strains
+[api, _, strains] =
+  if exports?
+    [exports._fixtures = {},
+    (require 'underscore'),
+    (require './strains')._strains.list]
+  else
+    [window._fixtures = {},
+    window._,
+    window._strains.list]
+
 random_sign = -> if Math.random() > 0.5 then 1 else -1
 
-random_mote = ->
+api.random_mote = ->
   strain: strains[Math.floor Math.random() * strains.length]
   radius: 0.01+0.05*Math.random()
   x: Math.random()
@@ -97,8 +106,7 @@ r4 =
   vx: 0
   vy: 0
 
-exports.random_mote = random_mote
-exports.one = [mid, food1, food2]
-exports.two = [e_to_w, w_to_e]
-exports.three = [e_to_w, w_to_e, sw_to_ne]
-exports.race = [r1,r2,r3,r4]
+api.one = [mid, food1, food2]
+api.two = [e_to_w, w_to_e]
+api.three = [e_to_w, w_to_e, sw_to_ne]
+api.race = [r1,r2,r3,r4]
