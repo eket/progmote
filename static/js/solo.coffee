@@ -12,7 +12,8 @@ time = 0
 _loop = _.throttle (->
   view.update motes
   motes = arena.step motes, dt
-  ___ time+=dt
+  time+=dt
+  ___ '.'
   if api.ai_strain?
     ejects = ai.doit context, motes, time, api.ai_strain
     x={}

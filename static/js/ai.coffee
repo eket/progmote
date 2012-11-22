@@ -42,7 +42,7 @@ _ai_motes = null
 
 api.doit = (__, motes, rc, strain) ->
   #_ai_motes = motes
-  console.time 'doit'
+  #console.time 'doit'
   now = rc
   sames = _.filter motes, same strain
   others = _.reject motes, same strain
@@ -67,5 +67,5 @@ api.doit = (__, motes, rc, strain) ->
           Math.PI + Math.atan2 target.y-y, target.x-x
         else null
       else null
-  console.timeEnd 'doit'
+  #console.timeEnd 'doit'
   r

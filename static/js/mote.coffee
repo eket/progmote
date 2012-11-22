@@ -64,7 +64,6 @@ collision = (mote, other) ->
   winner.vy = (m1*winner.vy+(dm)*loser.vy)/m1_
 
 api.eject = (i, strain, motes, angle) ->
-  ___ [i, strain, motes, angle]
   mote = (_.where motes, strain: strain)[i]
   {x: x0, y: y0, vx: vx0, vy: vy0, radius: r0} = mote
   return if r0 < 0.03
