@@ -1,3 +1,4 @@
+# [play solo](http://eket.su:8000) #
 
 Install
 -------
@@ -14,8 +15,15 @@ For convenience, install coffee and foreman globally:
 Run
 ---
 
-    foreman start
-    # or
-    foreman/norman/bin/foreman start
+	make
+	make start
 
-and visit [http://localhost:8000/arena.html]
+or
+
+	foreman start
+
+or
+
+	node_modules/foreman/bin/foreman start
+
+and visit http://localhost:8000
