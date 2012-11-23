@@ -24,7 +24,7 @@ _loop = _.throttle (->
   ais = {}
   if API.ai_strain?
     # run the ai
-    move = AI.doit context, motes, time, API.ai_strain
+    move = window._ai.doit context, motes, time, API.ai_strain
     API.done = move is 'done'
     ais[API.ai_strain] = move unless API.done
 

@@ -1,14 +1,9 @@
-console.log 'hellop'
-
 myCodeMirror = null
 
 $ ->
   $.get '/static/js/ai.txt', (data)->
-
-    d = $('#aicode')[0].contentDocument.body.innerText
-    #console.log d
     myCodeMirror = CodeMirror $('#codemirror')[0], 
-      value: d #"ai = (me, motes, controls, state) ->\n  if !controls controls =\n    mode: 'agressive'\n  return 0\n"
+      value: data
       mode: "coffeescript"
       theme: "solarized-dark"
       lineNumbers: on
@@ -21,7 +16,7 @@ $ ->
     cs = myCodeMirror.getValue()
     js = CoffeeScript.compile(cs)
     $('#mote iframe')[0].contentWindow.eval(js)
-
+    console.log js
 
 obj =
   message: 'dat.gui';
