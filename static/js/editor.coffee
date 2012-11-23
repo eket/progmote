@@ -1,22 +1,41 @@
 myCodeMirror = null
 
-$ ->
-  $.get '/static/js/ai.txt', (data)->
-    myCodeMirror = CodeMirror $('#codemirror')[0], 
-      value: data
-      mode: "coffeescript"
-      theme: "solarized-dark"
-      lineNumbers: on
-      height: "100%"
-      tabSize: 2
-      autofocus: on
+ais =
+  full_on: '/static/js/ai_full_on.txt'
+  cheater: '/static/js/ai_cheater.txt'
 
-$ ->
-  $('.run.btn').click ->
+arena = -> $('#mote iframe')[0].contentWindow
+load_ai = (key) -> $.get ais[key], (data) -> myCodeMirror.setValue data
+
+compile_and_eval = ->
     cs = myCodeMirror.getValue()
     js = CoffeeScript.compile(cs)
-    $('#mote iframe')[0].contentWindow.eval(js)
+    arena().eval(js)
     console.log js
+
+$ ->
+  myCodeMirror = CodeMirror $('#codemirror')[0],
+    value: ''
+    mode: "coffeescript"
+    theme: "solarized-dark"
+    lineNumbers: on
+    height: "100%"
+    tabSize: 2
+    autofocus: on
+    lineWrapping: on
+    extraKeys:
+      'Ctrl-Enter': compile_and_eval
+
+  load_ai 'full_on'
+
+  strains_dropdown = $('#strains-dropdown')
+  _.map window._strains.list, (strain) ->
+    strains_dropdown.append $("<li><a href='#'>#{strain}</a></li>").click ->
+      console.log strain
+      arena()._solo.ai_strain = strain
+  $('#ai-full_on').click -> load_ai 'full_on'
+  $('#ai-cheater').click -> load_ai 'cheater'
+  $('.run.btn').click -> compile_and_eval()
 
 obj =
   message: 'dat.gui';
