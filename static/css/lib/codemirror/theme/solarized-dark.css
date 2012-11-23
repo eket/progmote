@@ -1,174 +1,63 @@
-html * {
-  color-profile: sRGB;
-  rendering-intent: auto;
-}
-.cm-s-solarized-light {
-  background-color: #fdf6e3;
-  color: #657b83;
-}
-.cm-s-solarized-light .emphasis {
-  font-weight: bold;
-}
-.cm-s-solarized-light .dotted {
-  border-bottom: 1px dotted #cb4b16;
-}
-.cm-s-solarized-light .CodeMirror-gutter {
-  background-color: #eee8d5;
-  border-right: 3px solid #eee8d5;
-}
-.cm-s-solarized-light .CodeMirror-gutter .CodeMirror-gutter-text {
-  color: #93a1a1;
-}
-.cm-s-solarized-light .CodeMirror-cursor {
-  border-left-color: #002b36 !important;
-}
-.cm-s-solarized-light .CodeMirror-matchingbracket {
-  color: #002b36;
-  background-color: #eee8d5;
-  box-shadow: 0 0 10px #eee8d5;
-  font-weight: bold;
-}
-.cm-s-solarized-light .CodeMirror-nonmatchingbracket {
-  color: #002b36;
-  background-color: #eee8d5;
-  box-shadow: 0 0 10px #eee8d5;
-  font-weight: bold;
-  color: #dc322f;
-  border-bottom: 1px dotted #cb4b16;
-}
-.cm-s-solarized-light span.cm-keyword {
-  color: #657b83;
-  font-weight: bold;
-}
-.cm-s-solarized-light span.cm-atom {
-  color: #2aa198;
-}
-.cm-s-solarized-light span.cm-number {
-  color: #586e75;
-}
-.cm-s-solarized-light span.cm-def {
-  color: #268bd2;
-}
-.cm-s-solarized-light span.cm-variable {
-  color: #cb4b16;
-}
-.cm-s-solarized-light span.cm-variable-2 {
-  color: #cb4b16;
-}
-.cm-s-solarized-light span.cm-variable-3 {
-  color: #cb4b16;
-}
-.cm-s-solarized-light span.cm-comment {
-  color: #93a1a1;
-}
-.cm-s-solarized-light span.cm-property {
-  color: #b58900;
-}
-.cm-s-solarized-light span.cm-operator {
-  color: #657b83;
-}
-.cm-s-solarized-light span.cm-string {
-  color: #6c71c4;
-}
-.cm-s-solarized-light span.cm-error {
-  font-weight: bold;
-  border-bottom: 1px dotted #cb4b16;
-}
-.cm-s-solarized-light span.cm-bracket {
-  color: #cb4b16;
-}
-.cm-s-solarized-light span.cm-tag {
-  color: #657b83;
-}
-.cm-s-solarized-light span.cm-attribute {
-  color: #586e75;
-  font-weight: bold;
-}
-.cm-s-solarized-light span.cm-meta {
-  color: #268bd2;
-}
+.cm-s-solarized-dark span.cm-invalidchar {color: #dc322f;}
+
 .cm-s-solarized-dark {
-  background-color: #002b36;
-  color: #839496;
+  line-height: 1.3em;
 }
-.cm-s-solarized-dark .emphasis {
-  font-weight: bold;
+
+.cm-s-solarized-dark {
+  font-family: 'Bitstream Vera Sans Mono', 'DejaVu Sans Mono', 'Monaco', Courier, monospace !important;
+  font-size: 12px;
 }
-.cm-s-solarized-dark .dotted {
-  border-bottom: 1px dotted #cb4b16;
-}
-.cm-s-solarized-dark .CodeMirror-gutter {
-  background-color: #073642;
-  border-right: 3px solid #073642;
-}
-.cm-s-solarized-dark .CodeMirror-gutter .CodeMirror-gutter-text {
-  color: #586e75;
-}
-.cm-s-solarized-dark .CodeMirror-cursor {
-  border-left-color: #fdf6e3 !important;
-}
-.cm-s-solarized-dark .CodeMirror-matchingbracket {
-  color: #fdf6e3;
-  background-color: #073642;
-  box-shadow: 0 0 10px #073642;
-  font-weight: bold;
-}
-.cm-s-solarized-dark .CodeMirror-nonmatchingbracket {
-  color: #fdf6e3;
-  background-color: #073642;
-  box-shadow: 0 0 10px #073642;
-  font-weight: bold;
-  color: #dc322f;
-  border-bottom: 1px dotted #cb4b16;
-}
-.cm-s-solarized-dark span.cm-keyword {
-  color: #839496;
-  font-weight: bold;
-}
-.cm-s-solarized-dark span.cm-atom {
-  color: #2aa198;
-}
-.cm-s-solarized-dark span.cm-number {
-  color: #93a1a1;
-}
-.cm-s-solarized-dark span.cm-def {
-  color: #268bd2;
-}
-.cm-s-solarized-dark span.cm-variable {
-  color: #cb4b16;
-}
-.cm-s-solarized-dark span.cm-variable-2 {
-  color: #cb4b16;
-}
-.cm-s-solarized-dark span.cm-variable-3 {
-  color: #cb4b16;
-}
-.cm-s-solarized-dark span.cm-comment {
-  color: #586e75;
-}
-.cm-s-solarized-dark span.cm-property {
-  color: #b58900;
-}
-.cm-s-solarized-dark span.cm-operator {
-  color: #839496;
-}
-.cm-s-solarized-dark span.cm-string {
-  color: #6c71c4;
-}
-.cm-s-solarized-dark span.cm-error {
-  font-weight: bold;
-  border-bottom: 1px dotted #cb4b16;
-}
-.cm-s-solarized-dark span.cm-bracket {
-  color: #cb4b16;
-}
-.cm-s-solarized-dark span.cm-tag {
-  color: #839496;
-}
-.cm-s-solarized-dark span.cm-attribute {
-  color: #93a1a1;
-  font-weight: bold;
-}
-.cm-s-solarized-dark span.cm-meta {
-  color: #268bd2;
-}
+.cm-s-solarized-dark div.CodeMirror span.CodeMirror-matchingbracket {color: #d33682;}
+.cm-s-solarized-dark div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #dc322f;}
+
+.cm-s-solarized-dark { background: #002b36; color: #93a1a1; text-shadow: 0 -1px 1px #002b36; }
+.cm-s-solarized-dark div.CodeMirror-selected {background: #073642 !important;} /* 33322B*/
+.cm-s-solarized-dark .CodeMirror-cursor { border-left: 1px solid #fdf6e3 !important; }
+.cm-s-solarized-dark .CodeMirror-lines { margin-left:3px; margin-right:3px; }/*editable code holder*/
+.cm-s-solarized-dark .CodeMirror-gutter { background: #002b36; border-right:1px solid #657b83; padding-right:3px; min-width:2.5em; }
+.cm-s-solarized-dark .CodeMirror-gutter-text { color: #657b83; }
+
+.cm-s-solarized-dark span.cm-keyword { color: #268bd2; }
+.cm-s-solarized-dark span.cm-atom { color: #6c71c4; }
+.cm-s-solarized-dark span.cm-number { color: #6c71c4; }
+.cm-s-solarized-dark span.cm-def {color: #;}
+.cm-s-solarized-dark span.cm-variable { color: #; }
+.cm-s-solarized-dark span.cm-variable-2 { color: #; }
+.cm-s-solarized-dark span.cm-variable-3 { color: #; }
+.cm-s-solarized-dark span.cm-property {color: #;}
+.cm-s-solarized-dark span.cm-operator {color: #859900;}
+.cm-s-solarized-dark span.cm-comment { color: #586e75; }
+.cm-s-solarized-dark span.cm-string { color: #2aa198; }
+.cm-s-solarized-dark span.cm-string-2 {color: #2aa198;}
+.cm-s-solarized-dark span.cm-meta { color: #; }
+.cm-s-solarized-dark span.cm-error { color: #dc322f; }
+.cm-s-solarized-dark span.cm-qualifier {color: #;}
+.cm-s-solarized-dark span.cm-builtin { color: #; }
+.cm-s-solarized-dark span.cm-bracket { color: #; }
+.cm-s-solarized-dark span.cm-tag { color: #; }
+.cm-s-solarized-dark span.cm-attribute {color: #;}
+.cm-s-solarized-dark span.cm-header {color: #;}
+.cm-s-solarized-dark span.cm-quote {color: #;}
+.cm-s-solarized-dark span.cm-hr {color: #;}
+.cm-s-solarized-dark span.cm-link {color: #;}
+.cm-s-solarized-dark span.cm-punctuation {color: #859900;}
+
+/*
+$base03:    #002b36;
+$base02:    #073642;
+$base01:    #586e75;
+$base00:    #657b83;
+$base0:     #839496;
+$base1:     #93a1a1;
+$base2:     #eee8d5;
+$base3:     #fdf6e3;
+$yellow:    #b58900;
+$orange:    #cb4b16;
+$red:       #dc322f;
+$magenta:   #d33682;
+$violet:    #6c71c4;
+$blue:      #268bd2;
+$cyan:      #2aa198;
+$green:     #859900;
+*/
