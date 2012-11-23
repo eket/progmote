@@ -34,7 +34,7 @@ API.init = ->
   window.addEventListener 'resize', resize, no
   canvas = document.getElementById 'arena_canvas'
   context = canvas.getContext '2d'
-  window._solo.init canvas, context
+  window._solo.init context
   resize()
 
 # update what's on the canvas

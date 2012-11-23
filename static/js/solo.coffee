@@ -1,8 +1,7 @@
-[API, VH, V, AI, AR, F, G] =
+[API, VH, V, AR, F, G] =
   [window._solo = {},
   window._view_helper,
   window._view,
-  window._ai,
   window._arena,
   window._fixtures,
   window._geom]
@@ -24,7 +23,7 @@ _loop = _.throttle (->
   ais = {}
   if API.ai_strain?
     # run the ai
-    move = window._ai.doit context, motes, time, API.ai_strain
+    move = window._ai?.doit context, motes, time, API.ai_strain
     API.done = move is 'done'
     ais[API.ai_strain] = move unless API.done
 
@@ -34,14 +33,10 @@ _loop = _.throttle (->
   _loop() unless API.done), 30
 
 # set up callbacks for the ai
-API.init = (cvs, ctx) ->
-  VH.add_event_listener cvs, 'down', (e) ->
-    [x, y] = [(VH.get_x e), (VH.get_y e)]
-    pick_strain x, y
-  VH.add_event_listener cvs, 'move', (e) ->
+API.init = (ctx) ->
+  VH.add_event_listener ctx.canvas, 'move', (e) ->
     prog = (VH.get_x e)/V.a
     dt = prog/10
-
   context = ctx
 
   motes = AR.setup_random 50, F.random_mote
