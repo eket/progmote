@@ -1,14 +1,19 @@
 .PHONY: static node
+NM=node_modules
+JADE=$(NM)/jade/bin/jade
+COFFEE=$(NM)/coffee-script/bin/coffee
+
 all: static node jades
 
+modules:
+	npm install
+
 static:
-	coffee -c static/js/*.coffee
-
+	$(COFFEE) -c static/js/*.coffee
 node:
-	coffee -c *.coffee
-
+	$(COFFEE) -c *.coffee
 jades:
-	node_modules/jade/bin/jade static/html/*.jade
+	$(JADE) static/html/*.jade
 
 start:
 	python2 -m SimpleHTTPServer 8000

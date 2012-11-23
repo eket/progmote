@@ -8,8 +8,6 @@
       "socket.io": "*",
       "onecolor": "*",
       "underscore": "*",
-      "foreman": "*",
-      "watcher": "*",
       "jade": "*"
   },
   "repository": {
