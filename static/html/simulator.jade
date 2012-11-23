@@ -1,10 +1,21 @@
 html
   head
     script(src="/static/js/lib/jquery.min.js")
+    script(src="/static/js/lib/socket.io.min.js")
     script(src='/static/js/lib/underscore-min.js')
     script(src='/static/js/lib/one-color.js')
+
+    script(src='/static/js/strains.js')
+    script(src='/static/js/fixtures.js')
+    script(src='/static/js/geom.js')
+    script(src='/static/js/mote.js')
     script(src='/static/js/arena.js')
+
+    script(src='/static/js/view_lib.js')
+    script(src='/static/js/ai.js')
     script(src='/static/js/view.js')
+    script(src='/static/js/solo.js')
+
     script(src='/static/js/simulator.js')
 
     style
@@ -12,5 +23,5 @@ html
       #arena_canvas{background:#002b36;}
   body
     canvas#arena_canvas
-    
-    script init()
+    script _view.init();
+    script sim = new Sim(); view = new View(sim)

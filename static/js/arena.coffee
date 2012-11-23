@@ -46,10 +46,12 @@ do_ais = (ais, motes) ->
         M.eject i, strain, motes, angle if angle?
 
 ###
+#new api
 window?.Arena = 
   init: (seed) ->
-    @seed ?= (new Date()).getTime()
+    #return api.setup_random
     return {
+      seed: seed
       tick: 0
       motes: []
     }
@@ -61,4 +63,3 @@ window?.Arena =
     else 
       null
 ###
-
