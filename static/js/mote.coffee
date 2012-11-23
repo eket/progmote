@@ -15,7 +15,7 @@ sort_by2 = (a,b,f) -> if (f a) > (f b) then [b,a] else [a,b]
 
 API.fun_mass = (r) -> r*r*G.pi
 API.fun_mass_inv = (m) -> Math.sqrt m/G.pi
-distance = (mote, other) -> G.distance mote.x, mote.y, other.x, other.y
+API.distance = (mote, other) -> G.distance mote.x, mote.y, other.x, other.y
 
 mass = (mote) -> API.fun_mass mote.radius
 mass2 = (mote, other) -> [(mass mote), (mass other)]
@@ -40,7 +40,7 @@ API.displace = (mote, t) ->
   mote.y += mote.vy * t
 
 overlaps = (mote, other) ->
-  dist = distance mote, other
+  dist = API.distance mote, other
   sum_r = mote.radius + other.radius
   if dist < sum_r then [dist, sum_r-dist] else no
 
@@ -51,7 +51,7 @@ API.collide_mote = (mote, motes) ->
 
 collision = (mote, other) ->
   [loser, winner] = sort_by2 mote, other, (m) -> m.radius
-  d = distance loser, winner
+  d = API.distance loser, winner
   [m0, m1] = mass2 loser, winner
   sum_mass = m0+m1
   r0 = 1/2*(d+Math.sqrt(2*sum_mass/G.pi - d*d))
