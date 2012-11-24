@@ -49,54 +49,18 @@ html(lang="en")
                 li: a(href="#") coffeescript
             .btn-group.pull-right
               button.run.btn Run &nbsp; Ctrl + Enter
-            .btn-group.pull-right
-              a.btn.dropdown-toggle(href="#", data-toggle="dropdown")
-                | strain
-                b.caret
-              ul.dropdown-menu.bottom-up#strains-dropdown
-            .btn-group.pull-right
-              a.btn.dropdown-toggle(href="#", data-toggle="dropdown")
-                | AIs
-                b.caret
-              ul.dropdown-menu.bottom-up
-                li: a#ai-full_on(href="#") full on
-                li: a#ai-cheater(href="#") cheater
         #col-mote.span6 
           #mote
             iframe(src="/static/html/arena.html", width="100%", height="100%", style="border:0")
-        //
-          .btn-toolbar
-            .btn-group.pull-left
-              a.btn.dropdown-toggle(href="#", data-toggle="dropdown")
-                | rules: arena 
-                b.caret
-              ul.dropdown-menu.bottom-up
-                li: a(href="#") arena
-                li: a(href="#") retro
-                li: a(href="#") zombie
-            .btn-group.pull-left
-              a.btn.dropdown-toggle(href="#", data-toggle="dropdown")
-                | view: webdl 
-                b.caret
-              ul.dropdown-menu.bottom-up
-                li: a(href="#") dimension
-                li: a(href="#") webdl
-                li: a(href="#") immerse
-            
-              .progress.progress-striped.active(style="width: 100px")
-                .bar(style="width: 40%")
-
-
-
     //script(src="/static/js/lib/zepto.min.js")
     script(src="/static/js/lib/jquery.min.js")
     script(src="/static/js/lib/bootstrap.js")
     script(src="/static/js/lib/lodash.min.js")
-    script(src="/static/js/lib/dat.gui.min.js")
 
     script(src="/static/js/lib/codemirror/codemirror.js")
     script(src="/static/js/lib/codemirror/mode/javascript/javascript.js")
     script(src="/static/js/lib/codemirror/mode/coffeescript/coffeescript.js")
+    script(src="/static/js/lib/dat.gui.min.js")
 
     script(src="/static/js/lib/coffee-script.js")
     script(src="/static/js/strains.js")

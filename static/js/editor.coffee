@@ -12,21 +12,9 @@ compile_and_eval = ->
   arena().eval ai_js
   console.log ai_js
 
-populate_strains = ->
-  strains_dropdown = $('#strains-dropdown')
-  _.map window._strains.list, (strain) ->
-    strains_dropdown.append $("<li><a href='#'>#{strain}</a></li>").click ->
-      console.log strain
-      arena()._solo.ai_strain = strain
-      arena()._live_view.ai_strain = strain
-
 set_handlers = ->
-  $('#ai-full_on').click -> load_ai 'full_on'
-  $('#ai-cheater').click -> load_ai 'cheater'
-
   $('#mode-solo').click -> arena()._view.set_mode 'solo'
   $('#mode-live').click -> arena()._view.set_mode 'live'
-
   $('.run.btn').click -> compile_and_eval()
 
 setup_codemirror = ->
@@ -42,30 +30,29 @@ setup_codemirror = ->
     extraKeys:
       'Ctrl-Enter': compile_and_eval
 
+GUI = ->
+  @ai = 'ai'
+  @strain = 'strain'
+  @step = 2
+  @
+
+setup_datgui = ->
+  gui = new dat.GUI autoPlace: false
+  obj = new GUI()
+  $('.gui .code').append gui.domElement
+
+  (gui.add obj, 'ai', _.keys ais).onFinishChange (ai) -> load_ai ai
+
+  (gui.add obj, 'strain', window._strains.list).onFinishChange (strain) ->
+    console.log strain
+    arena()._solo.ai_strain = strain
+    arena()._live_view.ai_strain = strain
+
+  (gui.add obj, 'step', 0, 5).onChange (exp) ->
+    arena()._solo.dt = Math.pow 10, exp-4
+
 $ ->
-  populate_strains()
   setup_codemirror()
   set_handlers()
-  #arena()._view.set_mode 'live'
-  load_ai 'full_on'
-
-obj =
-  message: 'dat.gui';
-  speed: 0.8
-  displayOutline: false;
-  explode: console.log
-
-###
-$ ->
-  gui = new dat.GUI autoPlace: false
-  $('.gui .mote').append gui.domElement
-  _add = (a, b, c)-> gui.add view_options, a, b, c
-  _add 'delay', 0.01, 1
-
-  gui = new dat.GUI autoPlace: false
-  $('.gui .code').append gui.domElement
-  gui.add obj, 'message'
-  gui.add obj, 'speed', -5, 5
-  gui.add obj, 'displayOutline'
-  gui.add obj, 'explode'
-###
+  setup_datgui()
+  load_ai 'help'
