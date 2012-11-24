@@ -1,4 +1,4 @@
-[api, _, Fixtures, arena, io] =
+[API, _, F, AR, io] =
   [exports._multi = {},
   (require 'underscore'),
   (require './static/js/fixtures')._fixtures,
@@ -16,13 +16,13 @@ socks = []
 ais_ready = -> _.all (_.values ais), (v) -> v? 
 
 multi_do_ais = ->
-  arena.do_ais ais, motes
+  motes = AR.step motes, ais, dt
+  ___ time+=dt
   _loop()
 
 _loop = _.throttle (->
-  motes = arena.step motes, dt
-  ___ time+=dt
   s.emit 'update', motes: motes, time: time for s in socks
+
   ais_wait_id = setTimeout (->
     ___ 'ais timeout'
     multi_do_ais()), 2000), 30
@@ -39,9 +39,8 @@ io.sockets.on 'connection', (s) ->
       multi_do_ais()
 
   #motes = Fixtures.one
-  motes = arena.setup_random 20, Fixtures.random_mote
+  motes = AR.setup_random 20, F.random_mote
   _.each motes, (m) -> m.vx = m.vy = 0
-
   ___ 'connected'
   _loop() unless time > 0
 
