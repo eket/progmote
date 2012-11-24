@@ -10,10 +10,9 @@
 API.done = no
 # current strain of the ai
 API.ai_strain = null
-
+API.dt = 0.05
 context = null
 motes = []
-dt = 0.05
 time = 0
 
 _loop = _.throttle (->
@@ -28,17 +27,13 @@ _loop = _.throttle (->
     ais[API.ai_strain] = move unless API.done
 
   # get the next <motes>
-  motes = AR.step motes, ais, dt
-  time += dt
+  motes = AR.step motes, ais, API.dt
+  time += API.dt
   _loop() unless API.done), 30
 
 # set up callbacks for the ai
 API.init = (ctx) ->
-  VH.add_event_listener ctx.canvas, 'move', (e) ->
-    prog = (VH.get_x e)/V.a
-    dt = prog/10
   context = ctx
-
   motes = AR.setup_random 50, F.random_mote
   _.each motes, (m) -> m.vx = m.vy = 0
   _loop()

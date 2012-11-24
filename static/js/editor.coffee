@@ -1,5 +1,6 @@
 codemirror = null
 ais =
+  help: '/static/js/help.txt'
   full_on: '/static/js/ai_full_on.txt'
   cheater: '/static/js/ai_cheater.txt'
 
