@@ -42,9 +42,9 @@ setup_datgui = ->
   obj = new GUI()
   $('.gui .code').append gui.domElement
 
-  (gui.add obj, 'ai', _.keys ais).onFinishChange (ai) -> load_ai ai
+  (gui.add obj, 'ai', _.keys ais).onChange (ai) -> load_ai ai
 
-  (gui.add obj, 'strain', window._strains.list).onFinishChange (strain) ->
+  (gui.add obj, 'strain', [null].concat window._strains.list).onChange (strain) ->
     console.log strain
     arena()._solo.ai_strain = strain
     arena()._live_view.ai_strain = strain
