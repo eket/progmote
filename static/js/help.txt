@@ -1,0 +1,4 @@
+#set the mode
+#choose an ai
+#choose a strain
+#press C-Ret
