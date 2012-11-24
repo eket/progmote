@@ -34,8 +34,12 @@ API.init = ->
   window.addEventListener 'resize', resize, no
   canvas = document.getElementById 'arena_canvas'
   context = canvas.getContext '2d'
-  window._solo.init context
   resize()
+
+API.set_mode = (mode) ->
+  switch mode
+    when 'solo' then window._solo.init context
+    when 'live' then window._live_view.init context
 
 # update what's on the canvas
 # <motes> to display
