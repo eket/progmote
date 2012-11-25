@@ -33,6 +33,7 @@ GUI = ->
   @step = 2
   @eval = compile_and_eval
   @bg_transparency = 0.5
+  @hide_code = no
   @opacity = 1
 
 set_code_bg = (v) ->
@@ -64,6 +65,9 @@ setup_datgui = ->
 
   (gui.add obj, 'opacity', 0, 1).onChange (v) ->
     $('#col-code').css opacity: v
+
+  (gui.add obj, 'hide_code').onChange (v) ->
+    $('#col-code')[(if v then 'hide' else 'show')]()
 
   gui.add obj, 'eval'
 
