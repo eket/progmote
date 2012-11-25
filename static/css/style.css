@@ -1,17 +1,11 @@
-body {background: #002B36;}
-html, body, #ct { height: 100%}
-#ct { height: calc(100% - 45px); height: -webkit-calc(100% - 45px); }
-div {position:relative;}
-#cols, #codemirror, #mote, .CodeMirror, .CodeMirror-scroll, #col-code, #col-mote, #cols{ height: 100% }
-#col-code, #col-mote {height: calc(100% - 45px); height: -webkit-calc(100% - 45px);}
+*{margin:0;padding:0;border:none;}
+html, body, #col-code, #col-mote, #mote, #codemirror, .CodeMirror, .CodeMirror-scroll{height:100%;width:100%;}
 
-.dg.ac {z-index: 1 !important}
-.dg .c select {width: auto !important; margin:0!important;padding:0!important}
+body{background:#002b36;overflow:hidden;}
 
-.gui {position: absolute; height: 0; top: 40px; width: 100%;}
-.gui .code, .gui .mote {float:right; width: 240px; z-index: 1}
+#col-mote, #col-code, #datgui{position: absolute;}
+#col-mote, #col-code{top:0;left:0}
 
+#col-code{z-index: 1}
 
-.bottom-up {top: auto; bottom: 100%; }
-.navbar .dropdown-menu.bottom-up:before { border-bottom: 0px solid transparent !important; border-top: 7px solid rgba(0, 0, 0, 0.2); top: auto !important; bottom: -7px; }
-.navbar .dropdown-menu.bottom-up:after  { border-bottom: 0px solid transparent !important; border-top: 6px solid white;              top: auto !important; bottom: -6px; }
+#datgui {bottom: 20px; left: 0;z-index: 2 !important}

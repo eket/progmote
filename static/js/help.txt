@@ -1,4 +1,4 @@
-#set the mode
-#choose an ai
-#choose a strain
-#press C-Ret
+# slect the mode
+# choose a strain
+# choose an ai
+# press eval (or C-Ret)
