@@ -18,7 +18,7 @@ API.draw_counter = (ctx, mote, prog) ->
     ctx.fillStyle = counter_darken
     ctx.beginPath()
     ctx.moveTo V.a*x, V.a*y
-    ctx.arc V.a*x, V.a*y, V.a*r, start_angle, start_angle+passed_angle, no
+    ctx.arc V.a*x, V.a*y, 0.9*V.a*r, start_angle, start_angle+passed_angle, no
     ctx.fill()
 
 API.draw_targets = (ctx, mote, targets) ->
