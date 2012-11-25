@@ -12,6 +12,7 @@ compile_and_eval = ->
   ai_js = CoffeeScript.compile ai_coffee
   arena().eval ai_js
   console.log ai_js
+  arena()._solo.ai_error = null
 
 setup_codemirror = ->
   codemirror = CodeMirror $('#codemirror')[0],

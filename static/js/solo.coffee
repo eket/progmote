@@ -10,6 +10,7 @@
 API.done = no
 # current strain of the ai
 API.ai_strain = null
+API.ai_error = null
 API.dt = 0.05
 context = null
 motes = []
@@ -20,11 +21,15 @@ _loop = _.throttle (->
   V.update motes, time
 
   ais = {}
-  if API.ai_strain?
+  if API.ai_strain? and not API.ai_error?
     # run the ai
-    move = window._ai?.doit context, motes, time, API.ai_strain
-    API.done = move is 'done'
-    ais[API.ai_strain] = move unless API.done
+    try
+      move = window._ai?.doit context, motes, time, API.ai_strain
+      API.done = move is 'done'
+      ais[API.ai_strain] = move unless API.done
+    catch err
+      console.log 'error while calling ai'
+      console.log API.ai_error = err
 
   # get the next <motes>
   motes = AR.step motes, ais, API.dt
