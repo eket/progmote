@@ -36,6 +36,12 @@ GUI = ->
   @hide_code = no
   @opacity = 1
 
+HUD = ->
+  @speed = on
+  @radius_line = 0
+  @mass_line = 1
+  @time = on
+
 set_code_bg = (v) ->
   $('.cm-s-solarized-dark,.CodeMirror-gutter').css
     background: "rgba(0,43,54,#{v})"
@@ -45,29 +51,47 @@ setup_datgui = ->
   obj = new GUI()
   $('#datgui').append gui.domElement
 
-  (gui.add obj, 'mode', ['select mode', 'solo', 'live']).onChange (mode) ->
-    switch mode
-      when 'solo' then arena()._view.set_mode 'solo'
-      when 'live' then arena()._view.set_mode 'live'
+  game_gui = gui.addFolder 'game settings'
+  (game_gui.add obj, 'mode', ['select mode', 'solo', 'live'])
+    .onChange (mode) ->
+      switch mode
+        when 'solo' then arena()._view.set_mode 'solo'
+        when 'live' then arena()._view.set_mode 'live'
 
-  (gui.add obj, 'strain', [null].concat window._strains.list).onChange (strain) ->
-    console.log strain
-    arena()._solo.ai_strain = strain
-    arena()._live_view.ai_strain = strain
+  (game_gui.add obj, 'strain', [null].concat window._strains.list)
+    .onChange (strain) ->
+      console.log strain
+      arena()._solo.ai_strain = strain
+      arena()._live_view.ai_strain = strain
 
-  (gui.add obj, 'ai', _.keys ais).onChange (ai) -> load_ai ai
+  (game_gui.add obj, 'ai', _.keys ais)
+    .onChange (ai) -> load_ai ai
 
-  (gui.add obj, 'step', 0, 5).onChange (exp) ->
-    arena()._solo.dt = Math.pow 10, exp-4
-
-  (gui.add obj, 'bg_transparency', 0, 1).onChange (v) ->
+  code_ui = gui.addFolder 'code ui'
+  (code_ui.add obj, 'bg_transparency', 0, 1).onChange (v) ->
     set_code_bg v
 
-  (gui.add obj, 'opacity', 0, 1).onChange (v) ->
+  (code_ui.add obj, 'opacity', 0, 1).onChange (v) ->
     $('#col-code').css opacity: v
 
-  (gui.add obj, 'hide_code').onChange (v) ->
+  (code_ui.add obj, 'hide_code').onChange (v) ->
     $('#col-code')[(if v then 'hide' else 'show')]()
+
+  sim_ui = gui.addFolder 'simulation'
+
+  hud_obj = new HUD()
+  hud = sim_ui.addFolder 'hud'
+  (hud.add hud_obj, 'speed').onChange (v) ->
+    arena()._view?.hud.speed = v
+  ((hud.add hud_obj, 'radius_line', -1, 5).step 1).onChange (v) ->
+    arena()._view?.hud.radius = v
+  ((hud.add hud_obj, 'mass_line', -1, 5).step 1).onChange (v) ->
+    arena()._view?.hud.mass = v
+  (hud.add hud_obj, 'time').onChange (v) ->
+    arena()._view?.hud.time = v
+
+  (sim_ui.add obj, 'step', 0, 5).onChange (exp) ->
+    arena()._solo.dt = Math.pow 10, exp-4
 
   gui.add obj, 'eval'
 
