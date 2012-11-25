@@ -52,7 +52,7 @@ setup_datgui = ->
   obj = new GUI()
   $('#datgui').append gui.domElement
 
-  game_gui = gui.addFolder 'game settings'
+  (game_gui = gui.addFolder 'game settings').open()
   (game_gui.add obj, 'mode', ['select mode', 'solo', 'live'])
     .onChange (mode) ->
       switch mode
