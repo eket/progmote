@@ -8,6 +8,10 @@ eject_throttle = 5
 
 wait_eject = (i, now) -> if (l=last_ejects[i])? then l+eject_throttle-now else 0
 
+API.Gui = new (->
+  @draw_counter = on
+  @draw_targets = on)()
+
 API.doit = (ctx, motes, now, strain) ->
   sames = _.filter motes, AIH.same strain
   others = _.reject motes, AIH.same strain
@@ -21,8 +25,8 @@ API.doit = (ctx, motes, now, strain) ->
           G.distance mote, other
 
       wait = wait_eject i, now
-      AIH.draw_counter ctx, mote, wait/eject_throttle
-      AIH.draw_targets ctx, mote, targets
+      AIH.draw_counter ctx, mote, wait/eject_throttle if API.Gui.draw_counter
+      AIH.draw_targets ctx, mote, targets if API.Gui.draw_targets
 
       if targets.length > 0 and wait <= 0
         last_ejects[i] = now
