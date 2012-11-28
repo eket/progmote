@@ -1,5 +1,5 @@
 [API, VH, V, AR, F, G] =
-  [window._solo = {},
+  [window._solo_view = {},
   window._view_helper,
   window._view,
   window._arena,

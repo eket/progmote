@@ -38,7 +38,7 @@ API.init = ->
 
 API.set_mode = (mode) ->
   switch mode
-    when 'solo' then window._solo.init context
+    when 'solo' then window._solo_view.init context
     when 'live' then window._live_view.init context
 
 # update what's on the canvas

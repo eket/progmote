@@ -21,7 +21,7 @@ set_strain = (strain) ->
   update_settings()
   if strain isnt strains[0] and (m=Main.mode) isnt modes[0]
     console.log strain
-    arena()["_#{m}"].ai_strain = strain
+    arena()["_#{m}_view"].ai_strain = strain
 
 set_mode = (mode) ->
   if mode isnt modes[0]
@@ -42,7 +42,7 @@ compile_and_eval = ->
   ai_js = CoffeeScript.compile ai_coffee
   arena().eval ai_js
   console.log ai_js
-  arena()._solo.ai_error = null
+  arena()._solo_view.ai_error = null
   if Main.save_on_eval
     console.log 'save'
     window.localStorage?.ai_code = ai_coffee
@@ -126,7 +126,7 @@ setup_datgui = ->
     arena()._view?.hud.time = v
 
   (sim_ui.add Main, 'step', 0, 5).onChange (exp) ->
-    arena()._solo.dt = Math.pow 10, exp-4
+    arena()._solo_view.dt = Math.pow 10, exp-4
 
   setup_ai_controls()
 
