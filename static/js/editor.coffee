@@ -86,9 +86,6 @@ setup_datgui = ->
   (code_ui.add Main, 'opacity', 0, 1).onChange (v) ->
     $('#col-code').css opacity: v
 
-  (code_ui.add Main, 'hide_code').onChange (v) ->
-    $('#col-code')[(if v then 'hide' else 'show')]()
-
   sim_ui = GUI.addFolder 'simulation'
 
   hud = sim_ui.addFolder 'hud'
@@ -105,6 +102,9 @@ setup_datgui = ->
     arena()._solo.dt = Math.pow 10, exp-4
 
   setup_ai_controls()
+
+  (GUI.add Main, 'hide_code').onChange (v) ->
+    $('#col-code')[(if v then 'hide' else 'show')]()
 
   GUI.add Main, 'eval'
 
