@@ -65,6 +65,7 @@ collision = (mote, other) ->
 
 API.eject = (i, strain, motes, angle) ->
   mote = (_.where motes, strain: strain)[i]
+  return unless mote?
   {x: x0, y: y0, vx: vx0, vy: vy0, radius: r0} = mote
   return if r0 < 0.03
   m0 = API.fun_mass r0

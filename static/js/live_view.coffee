@@ -20,6 +20,7 @@ API.init = (ctx) ->
       send_ejects ctx, motes, time if API.ai_strain?
 
 send_ejects = (ctx, motes, time) ->
-  ejects = window._ai.doit ctx, motes, time, API.ai_strain
-  p = {strain: API.ai_strain, ejects: ejects}
-  sock.emit 'ejects', p
+  if window._ai?
+    ejects = window._ai.doit ctx, motes, time, API.ai_strain
+    p = {strain: API.ai_strain, ejects: ejects}
+    sock.emit 'ejects', p
