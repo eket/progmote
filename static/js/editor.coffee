@@ -3,8 +3,15 @@ ais =
   help: '/static/js/help.txt'
   full_on: '/static/js/ai_full_on.txt'
   cheater: '/static/js/ai_cheater.txt'
+  local_storage: 'local_storage'
 
-load_ai = (key) -> $.get ais[key], (data) -> codemirror.setValue data
+load_ai = (key) ->
+  if key is 'local_storage'
+    data = window.localStorage?.ai_code
+    codemirror.setValue data
+  else $.get ais[key], (data) ->
+    codemirror.setValue data
+
 arena = -> $('#mote')[0].contentWindow
 
 setup_ai_controls = ->
@@ -20,6 +27,9 @@ compile_and_eval = ->
   arena().eval ai_js
   console.log ai_js
   arena()._solo.ai_error = null
+  if Main.save_on_eval
+    console.log 'save'
+    window.localStorage?.ai_code = ai_coffee
   setup_datgui()
   console.log 'eval done'
 
@@ -44,6 +54,7 @@ Main = new (->
   @eval = compile_and_eval
   @bg_transparency = 0.5
   @hide_code = no
+  @save_on_eval = on
   @opacity = 1)
 
 HUD = new (->
@@ -78,6 +89,8 @@ setup_datgui = ->
 
   (game_gui.add Main, 'ai', _.keys ais)
     .onChange (ai) -> load_ai ai
+
+  game_gui.add Main, 'save_on_eval', on
 
   code_ui = GUI.addFolder 'code ui'
   (code_ui.add Main, 'bg_transparency', 0, 1).onChange (v) ->
