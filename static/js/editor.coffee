@@ -4,13 +4,29 @@ ais =
   full_on: '/static/js/ai_full_on.txt'
   cheater: '/static/js/ai_cheater.txt'
   local_storage: 'local_storage'
+strains  = ['select strain'].concat window._strains.list
+modes = ['select mode', 'solo', 'live']
 
-load_ai = (key) ->
+set_ai = (key) ->
+  Main.ai = key
+  update_settings()
   if key is 'local_storage'
     data = window.localStorage?.ai_code
     codemirror.setValue data
   else $.get ais[key], (data) ->
     codemirror.setValue data
+
+set_strain = (strain) ->
+  Main.strain = strain
+  update_settings()
+  if strain isnt strains[0] and (m=Main.mode) isnt modes[0]
+    console.log strain
+    arena()["_#{m}"].ai_strain = strain
+
+set_mode = (mode) ->
+  if mode isnt modes[0]
+    arena()._view.set_mode mode
+    set_strain strains[_.random 1, strains.length]
 
 arena = -> $('#mote')[0].contentWindow
 
@@ -47,9 +63,9 @@ setup_codemirror = ->
       'Ctrl-Enter': compile_and_eval
 
 Main = new (->
-  @mode = ''
-  @ai = ''
-  @strain = ''
+  @mode = modes[0]
+  @ai = ais.help
+  @strain = strains[0]
   @step = 2
   @eval = compile_and_eval
   @bg_transparency = 0.5
@@ -69,26 +85,24 @@ set_code_bg = (v) ->
   $('.cm-s-solarized-dark,.CodeMirror-gutter').css
     background: "rgba(0,43,54,#{v})"
 
+update_settings = ->
+  _.each GUI.__folders['game settings'].__controllers, (c) ->
+    c.updateDisplay()
+
 setup_datgui = ->
   GUI = null
   GUI = new dat.GUI autoPlace: false
   $('#datgui').empty().append GUI.domElement
 
   (game_gui = GUI.addFolder 'game settings').open()
-  (game_gui.add Main, 'mode', ['select mode', 'solo', 'live'])
-    .onChange (mode) ->
-      switch mode
-        when 'solo' then arena()._view.set_mode 'solo'
-        when 'live' then arena()._view.set_mode 'live'
+  (game_gui.add Main, 'mode', modes)
+    .onChange (mode) -> set_mode mode
 
-  (game_gui.add Main, 'strain', [null].concat window._strains.list)
-    .onChange (strain) ->
-      console.log strain
-      arena()._solo.ai_strain = strain
-      arena()._live_view.ai_strain = strain
+  (game_gui.add Main, 'strain', strains)
+    .onFinishChange (strain) -> set_strain strain
 
   (game_gui.add Main, 'ai', _.keys ais)
-    .onChange (ai) -> load_ai ai
+    .onFinishChange (ai) -> set_ai ai
 
   game_gui.add Main, 'save_on_eval', on
 
@@ -125,4 +139,4 @@ $ ->
   setup_codemirror()
   set_code_bg 0.5
   setup_datgui()
-  load_ai 'help'
+  set_ai if window.localStorage?.ai_code? then 'local_storage' else 'help'
