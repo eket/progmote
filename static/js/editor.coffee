@@ -26,7 +26,7 @@ set_strain = (strain) ->
 set_mode = (mode) ->
   if mode isnt modes[0]
     arena()._view.set_mode mode
-    set_strain strains[_.random 1, strains.length]
+    set_strain strains[_.random 1, strains.length-1]
 
 arena = -> $('#mote')[0].contentWindow
 
