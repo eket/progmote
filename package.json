@@ -9,7 +9,8 @@
       "onecolor": "*",
       "lodash": "*",
       "jade": "*",
-      "zepto": "*"
+      "zepto": "*",
+      "serve": "*"
   },
   "repository": {
     "type": "git",
