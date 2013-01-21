@@ -1,4 +1,4 @@
 /node_modules
 /static/html/*.html
 /static/js/*.js
-
+/*.js
