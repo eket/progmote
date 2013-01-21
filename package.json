@@ -1,13 +1,13 @@
 {
   "name": "progmote",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "ek",
   "main": "arena.js",
   "dependencies": {
       "coffee-script": "*",
       "socket.io": "*",
       "onecolor": "*",
-      "underscore": "*",
+      "lodash": "*",
       "jade": "*"
   },
   "repository": {
