@@ -1,6 +1,6 @@
 .PHONY: static node
 NM=node_modules
-JADE=$(NM)/jade/bin/jade
+JADE=$(NM)/jade/bin/jade.js
 COFFEE=$(NM)/coffee-script/bin/coffee
 
 JSLIB=static/js/lib

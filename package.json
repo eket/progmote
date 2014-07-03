@@ -4,13 +4,14 @@
   "description": "ek",
   "main": "arena.js",
   "dependencies": {
-      "coffee-script": "*",
-      "socket.io": "*",
-      "onecolor": "*",
-      "lodash": "*",
-      "jade": "*",
-      "zepto": "*",
-      "serve": "*"
+    "coffee-script": "*",
+    "jade": "*",
+    "lodash": "*",
+    "onecolor": "*",
+    "serve": "*",
+    "socket.io": "^0.9.17",
+    "underscore": "^1.6.0",
+    "zepto": "*"
   },
   "repository": {
     "type": "git",
